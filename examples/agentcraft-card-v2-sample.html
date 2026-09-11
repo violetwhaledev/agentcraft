@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AGENTCRAFT card — local-user</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: radial-gradient(1200px 800px at 20% -10%, #12121f 0%, #0a0a12 60%);
+    color: #f4f5fb;
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Helvetica, Arial, "Noto Sans", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .stage {
+    width: 1200px;
+    padding: 32px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 420px 1fr;
+    gap: 28px;
+    align-items: start;
+  }
+
+  /* ---------- FUT-STYLE CARD (left) ---------- */
+  .card {
+    position: relative;
+    border-radius: 24px;
+    padding: 26px 24px 22px;
+    background:
+      linear-gradient(160deg, #d1d5db22 0%, transparent 42%),
+      linear-gradient(180deg, #1a1a2e 0%, #0d0d18 100%);
+    border: 1px solid #262a44;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.55),
+                inset 0 1px 0 rgba(255,255,255,0.04);
+    overflow: hidden;
+  }
+  .card::before {
+    content: "";
+    position: absolute; inset: 0;
+    border-radius: 24px;
+    padding: 1px;
+    background: linear-gradient(140deg, #d1d5db, transparent 40%, #9ca3af88);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+    pointer-events: none;
+  }
+  .brand-row { display:flex; align-items:baseline; justify-content:space-between; }
+  .brand {
+    font-size: 26px; font-weight: 900; letter-spacing: 3px;
+    background: linear-gradient(90deg, #d1d5db, #9ca3af);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .brand-tag { font-size: 11px; color: #5a6088; letter-spacing:.5px; }
+
+  .hero { display:flex; align-items:center; gap: 20px; margin: 18px 0 8px; }
+  .overall {
+    font-size: 92px; font-weight: 900; line-height: 0.9;
+    color: #d1d5db;
+    text-shadow: 0 0 30px #d1d5db44;
+    font-variant-numeric: tabular-nums;
+  }
+  .overall-side { display:flex; flex-direction:column; gap:8px; }
+  .overall-cap { font-size:12px; letter-spacing:2px; color:#9aa0bd; font-weight:700; }
+  .tier-badge {
+    display:inline-block; padding: 6px 14px; border-radius: 999px;
+    font-size: 14px; font-weight: 900; letter-spacing: 2px;
+    color: #0a0a12;
+    background: linear-gradient(90deg, #d1d5db, #9ca3af);
+    box-shadow: 0 6px 18px #d1d5db44;
+    width: fit-content;
+  }
+  .subj { margin-top: 10px; }
+  .subj-label { font-size: 16px; font-weight: 700; color: #f4f5fb; }
+  .subj-repo {
+    font-family: "Cascadia Code", "Consolas", "SFMono-Regular", "Menlo", monospace; font-size: 11px; color: #5a6088;
+    margin-top: 3px; word-break: break-all;
+  }
+  .subj-gen { font-size: 11px; color: #5a6088; margin-top: 4px; }
+
+  .radar-wrap { display:flex; justify-content:center; margin: 8px 0 4px; }
+
+  .stats { margin-top: 6px; display:flex; flex-direction:column; gap: 9px; }
+  .stat-head { display:flex; align-items:baseline; gap:8px; }
+  .stat-key { font-family:"Cascadia Code", "Consolas", "SFMono-Regular", "Menlo", monospace; font-size:11px; color:#5a6088; font-weight:700; width:22px; }
+  .stat-name { flex:1; font-size:13px; color:#9aa0bd; font-weight:600; }
+  .stat-score { font-size:16px; font-weight:900; font-variant-numeric:tabular-nums; }
+  .moat-tag { margin-left:6px; font-size:10px; color:#a78bfa; font-weight:800; letter-spacing:.5px; }
+  .na-tag { margin-left:6px; font-size:10px; color:#5a6088; font-style:italic; }
+  .bar { height:6px; border-radius:6px; background:#262a44; overflow:hidden; margin-top:3px; }
+  .bar-fill { height:100%; border-radius:6px; }
+
+  /* per-pillar SUB-SIGNAL micro-bars (D3 depth surface) */
+  .subs { margin:6px 0 2px 22px; display:flex; flex-direction:column; gap:4px; }
+  .sub { display:grid; grid-template-columns: 96px 1fr 20px; align-items:center; gap:8px; }
+  .sub-name { font-size:10.5px; color:#5a6088; font-weight:600;
+              white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .sub-bar { height:4px; border-radius:4px; background:#262a44;
+             overflow:hidden; display:block; }
+  .sub-fill { display:block; height:100%; border-radius:4px; opacity:0.85; }
+  .sub-val { font-size:10px; font-weight:800; text-align:right;
+             font-variant-numeric:tabular-nums; white-space:nowrap; }
+  /* v2: honest count hint (applied/eligible + verified) beside a sub-signal */
+  .sub-hint { font-size:8.5px; font-weight:700; color:#5a6088;
+              margin-left:4px; letter-spacing:.2px; }
+  /* v2: unmeasured sub-signal (score:null) — honest badge, no fabricated bar */
+  .sub-unmeasured .sub-name { opacity:0.7; font-style:italic; }
+  .sub-bar-empty { background:repeating-linear-gradient(90deg,
+                    #262a44 0 4px, transparent 4px 8px); opacity:0.5; }
+  .sub-na { font-size:8.5px; font-weight:800; text-align:right; letter-spacing:.3px;
+            color:#5a6088; font-style:italic; white-space:nowrap; }
+
+  /* ---------- RIGHT COLUMN ---------- */
+  .right { display:flex; flex-direction:column; gap: 22px; }
+  .panel {
+    background: linear-gradient(180deg, #1a1a2ecc, #12121fcc);
+    border: 1px solid #262a44;
+    border-radius: 18px;
+    padding: 20px 22px;
+  }
+  .panel-title {
+    font-size: 12px; letter-spacing: 3px; font-weight: 800;
+    color: #9aa0bd; margin-bottom: 14px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .panel-title::after { content:""; flex:1; height:1px; background:#262a44; }
+
+  .meta-strip { display:grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+  .meta-cell {
+    background: #0a0a1288; border:1px solid #262a44;
+    border-radius: 14px; padding: 14px 16px;
+  }
+  .meta-label { font-size:11px; letter-spacing:2px; color:#5a6088; font-weight:700; }
+  .meta-big { font-size:34px; font-weight:900; margin:4px 0 2px; font-variant-numeric:tabular-nums; }
+  .meta-sub { font-size:11px; color:#9aa0bd; line-height:1.4; }
+  .meta-note { margin-top:10px; font-size:11px; color:#5a6088; font-style:italic; }
+
+  .growth-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+  .growth-title { font-size: 12px; letter-spacing:3px; font-weight:800; color:#9aa0bd; }
+  .growth-target { font-size: 11px; color:#5a6088; }
+  .growth-target b { color:#d1d5db; }
+
+  .coach {
+    border:1px solid #262a44; border-radius:14px;
+    padding: 14px 16px; margin-bottom: 12px;
+    background: #0a0a1266;
+    border-left: 3px solid #f87171;
+  }
+  .coach-head { display:flex; align-items:center; gap:10px; margin-bottom:8px; }
+  .coach-pill {
+    font-family:"Cascadia Code", "Consolas", "SFMono-Regular", "Menlo", monospace; font-size:11px; font-weight:800;
+    color:#0a0a12; background:#5eead4;
+    padding:2px 8px; border-radius:6px;
+  }
+  .coach-title { font-size:15px; font-weight:800; color:#f4f5fb; }
+  .coach-row { display:flex; gap:10px; margin: 5px 0; font-size:13px; line-height:1.5; }
+  .lbl { flex:0 0 42px; font-size:10px; font-weight:800; letter-spacing:1px;
+          color:#5a6088; padding-top:2px; }
+  .weak-lbl { color:#f87171; }
+  .how-lbl { color:#4ade80; }
+  .txt { flex:1; color:#9aa0bd; }
+  .coach-example {
+    margin: 8px 0 4px; padding: 8px 12px; border-radius:8px;
+    background:#0a0a12; border:1px dashed #262a44;
+    font-family:"Cascadia Code", "Consolas", "SFMono-Regular", "Menlo", monospace; font-size:12px; color:#5eead4;
+    word-break: break-word;
+  }
+  .coach-retest { font-size:11px; color:#5a6088; margin-top:6px; font-style:italic; }
+
+  .strengths { display:flex; flex-direction:column; gap:8px; }
+  .strength { display:flex; gap:10px; align-items:baseline; }
+  .strength-pill {
+    font-family:"Cascadia Code", "Consolas", "SFMono-Regular", "Menlo", monospace; font-size:11px; font-weight:800;
+    color:#0a0a12; background:#4ade80;
+    padding:2px 8px; border-radius:6px; flex:0 0 auto;
+  }
+  .strength-txt { font-size:13px; color:#9aa0bd; line-height:1.5; }
+
+  .empty { font-size:13px; color:#9aa0bd; font-style:italic; }
+
+  /* ---------- v2: PROFILE & STYLE chips ---------- */
+  .desc-note { margin-top:12px; font-size:11px; color:#5a6088;
+               font-style:italic; }
+  .chip-group { margin-bottom:12px; }
+  .chip-group:last-of-type { margin-bottom:0; }
+  .chip-cap { font-size:10px; letter-spacing:2px; font-weight:800;
+              color:#5a6088; margin-bottom:8px; }
+  .chips { display:flex; flex-wrap:wrap; gap:8px; }
+  .chip { display:inline-flex; align-items:baseline; gap:6px;
+          background:#0a0a1288; border:1px solid #262a44;
+          border-radius:8px; padding:5px 10px; }
+  .chip-k { font-size:10px; font-weight:800; letter-spacing:.5px;
+            color:#a78bfa; text-transform:uppercase; }
+  .chip-v { font-size:12px; color:#9aa0bd; }
+
+  /* ---------- v2: TREND sparkline ---------- */
+  .trend-legend { display:flex; flex-wrap:wrap; gap:14px; margin-bottom:10px; }
+  .leg { display:inline-flex; align-items:center; gap:6px; font-size:11px;
+         font-weight:700; color:#9aa0bd; }
+  .leg-dot { width:10px; height:10px; border-radius:3px; display:inline-block; }
+  .trend-svg { width:100%; }
+  .trend-svg svg { width:100%; height:auto; display:block; }
+
+  /* ---------- v2: PRACTICES & ANTI-PATTERNS ---------- */
+  .pa-sub-title { font-size:10px; letter-spacing:2px; font-weight:800;
+                  color:#4ade80; margin:6px 0 10px; }
+  .pa-sub-bad { color:#f87171; margin-top:16px; }
+  .pa-row { display:flex; gap:10px; align-items:baseline; margin-bottom:9px; }
+  .pa-pill { font-family:"Cascadia Code", "Consolas", "SFMono-Regular", "Menlo", monospace; font-size:10px; font-weight:800;
+             color:#0a0a12; padding:2px 8px; border-radius:6px;
+             flex:0 0 auto; }
+  .pa-pill-good { background:#4ade80; }
+  .pa-pill-bad { background:#f87171; }
+  .pa-txt { font-size:12.5px; color:#9aa0bd; line-height:1.5; }
+  .pa-cost { display:inline-block; margin-left:8px; font-size:9.5px; font-weight:800;
+             letter-spacing:.5px; text-transform:uppercase; padding:1px 7px;
+             border-radius:999px; border:1px solid; vertical-align:middle; }
+
+  .footer {
+    grid-column: 1 / -1; text-align:center; margin-top: 4px;
+    font-size: 11px; color:#5a6088;
+  }
+  .footer b { color:#9aa0bd; }
+</style>
+</head>
+<body>
+  <div class="stage" id="agentcraft-stage">
+    <!-- LEFT: FUT-STYLE CARD -->
+    <div class="card">
+      <div class="brand-row">
+        <div class="brand">AGENTCRAFT</div>
+        <div class="brand-tag">Not a verdict — a coach.</div>
+      </div>
+
+      <div class="hero">
+        <div class="overall">72</div>
+        <div class="overall-side">
+          <div class="overall-cap">OVERALL</div>
+          <div class="tier-badge">SILVER</div>
+        </div>
+      </div>
+
+      <div class="subj">
+        <div class="subj-label">local-user</div>
+        <div class="subj-repo">C:/Users/example/Desktop/sample-repo</div>
+        <div class="subj-gen">2026-09-11T00:00:00Z</div>
+      </div>
+
+      <div class="radar-wrap"><svg width="460" height="460" viewBox="0 0 460 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="AGENTCRAFT 7-pillar radar"><polygon points="230.0,188.6 262.4,204.2 270.4,239.2 248.0,267.3 212.0,267.3 189.6,239.2 197.6,204.2" fill="none" stroke="#262a44" stroke-width="1" opacity="0.7"/><polygon points="230.0,147.2 294.7,178.4 310.7,248.4 265.9,304.6 194.1,304.6 149.3,248.4 165.3,178.4" fill="none" stroke="#262a44" stroke-width="1" opacity="0.7"/><polygon points="230.0,105.8 327.1,152.6 351.1,257.6 283.9,341.9 176.1,341.9 108.9,257.6 132.9,152.6" fill="none" stroke="#262a44" stroke-width="1" opacity="0.7"/><polygon points="230.0,64.4 359.5,126.8 391.4,266.8 301.9,379.2 158.1,379.2 68.6,266.8 100.5,126.8" fill="none" stroke="#262a44" stroke-width="1" opacity="0.7"/><line x1="230.0" y1="230.0" x2="230.0" y2="64.4" stroke="#262a44" stroke-width="1" opacity="0.6"/><line x1="230.0" y1="230.0" x2="359.5" y2="126.8" stroke="#262a44" stroke-width="1" opacity="0.6"/><line x1="230.0" y1="230.0" x2="391.4" y2="266.8" stroke="#262a44" stroke-width="1" opacity="0.6"/><line x1="230.0" y1="230.0" x2="301.9" y2="379.2" stroke="#262a44" stroke-width="1" opacity="0.6"/><line x1="230.0" y1="230.0" x2="158.1" y2="379.2" stroke="#262a44" stroke-width="1" opacity="0.6"/><line x1="230.0" y1="230.0" x2="68.6" y2="266.8" stroke="#262a44" stroke-width="1" opacity="0.6"/><line x1="230.0" y1="230.0" x2="100.5" y2="126.8" stroke="#262a44" stroke-width="1" opacity="0.6"/><polygon points="230.0,94.2 325.8,153.6 344.6,256.2 280.3,334.4 182.6,328.5 136.4,251.4 119.9,142.2" fill="rgba(94,234,212,0.16)" stroke="#5eead4" stroke-width="2.5" stroke-linejoin="round"/><circle cx="230.0" cy="94.2" r="4" fill="#5eead4"/><circle cx="325.8" cy="153.6" r="4" fill="#5eead4"/><circle cx="344.6" cy="256.2" r="4" fill="#5eead4"/><circle cx="280.3" cy="334.4" r="4" fill="#5eead4"/><circle cx="182.6" cy="328.5" r="4" fill="#5eead4"/><circle cx="136.4" cy="251.4" r="4" fill="#a78bfa"/><circle cx="119.9" cy="142.2" r="4" fill="#a78bfa"/><text x="230.0" y="16.7" fill="#9aa0bd" font-size="12.5" font-weight="700" text-anchor="middle" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif">INTENT</text><text x="230.0" y="30.7" fill="#4ade80" font-size="12" font-weight="800" text-anchor="middle" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif">82</text><text x="393.6" y="95.5" fill="#9aa0bd" font-size="12.5" font-weight="700" text-anchor="start" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif">CONTEXT</text><text x="393.6" y="109.5" fill="#fbbf24" font-size="12" font-weight="800" text-anchor="start" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif">74</text><text x="434.1" y="288.6" fill="#9aa0bd" font-size="12.5" font-weight="700" text-anchor="start" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif">EXECUTION</text><text x="434.1" y="302.6" fill="#fbbf24" font-size="12" font-weight="800" text-anchor="start" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif">71</text><text x="320.8" y="430.6" fill="#9aa0bd" font-size="12.5" font-weight="700" text-anchor="start" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif">ORCHESTR.</text><text x="320.8" y="444.6" fill="#fbbf24" font-size="12" font-weight="800" text-anchor="start" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif">70</text><text x="139.2" y="430.6" fill="#9aa0bd" font-size="12.5" font-weight="700" text-anchor="end" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif">VERIFY</text><text x="139.2" y="444.6" fill="#fbbf24" font-size="12" font-weight="800" text-anchor="end" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif">66</text><text x="25.9" y="288.6" fill="#a78bfa" font-size="12.5" font-weight="700" text-anchor="end" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif">MEMORY ◆</text><text x="25.9" y="302.6" fill="#f87171" font-size="12" font-weight="800" text-anchor="end" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif">58</text><text x="66.4" y="95.5" fill="#a78bfa" font-size="12.5" font-weight="700" text-anchor="end" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif">DISCIPLINE ◆</text><text x="66.4" y="109.5" fill="#4ade80" font-size="12" font-weight="800" text-anchor="end" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif">85</text></svg></div>
+
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-head">
+            <span class="stat-key">P1</span>
+            <span class="stat-name">Intent &amp; Framing</span>
+            <span class="stat-score" style="color:#4ade80">82</span>
+          </div>
+          <div class="bar"><div class="bar-fill" style="width:82%;
+               background:linear-gradient(90deg,#4ade80,#4ade80cc)"></div></div>
+          <div class="subs">
+          <div class="sub">
+            <span class="sub-name" title="goal_clarity">Goal clarity</span>
+            <span class="sub-bar"><span class="sub-fill" style="width:88%;
+                  background:#4ade80"></span></span>
+            <span class="sub-val" style="color:#4ade80">88<span class="sub-hint">6/8 ✓3</span></span>
+          </div>
+          <div class="sub">
+            <span class="sub-name" title="problem_framing">Problem framing</span>
+            <span class="sub-bar"><span class="sub-fill" style="width:80%;
+                  background:#4ade80"></span></span>
+            <span class="sub-val" style="color:#4ade80">80<span class="sub-hint">4/6 ✓2</span></span>
+          </div>
+          <div class="sub">
+            <span class="sub-name" title="acceptance_defined">Acceptance defined</span>
+            <span class="sub-bar"><span class="sub-fill" style="width:78%;
+                  background:#4ade80"></span></span>
+            <span class="sub-val" style="color:#4ade80">78<span class="sub-hint">5/7 ✓3</span></span>
+          </div>
+          <div class="sub">
+            <span class="sub-name" title="constraint_precision">Constraint precision</span>
+            <span class="sub-bar"><span class="sub-fill" style="width:74%;
+                  background:#fbbf24"></span></span>
+            <span class="sub-val" style="color:#fbbf24">74<span class="sub-hint">4/5 ✓1</span></span>
+          </div></div>
+        </div>
+        <div class="stat">
+          <div class="stat-head">
+            <span class="stat-key">P2</span>
+            <span class="stat-name">Context &amp; Grounding</span>
+            <span class="stat-score" style="color:#fbbf24">74</span>
+          </div>
+          <div class="bar"><div class="bar-fill" style="width:74%;
+               background:linear-gradient(90deg,#fbbf24,#fbbf24cc)"></div></div>
+          <div class="subs">
+          <div class="sub">
+            <span class="sub-name" title="artifact_anchoring">Artifact anchoring</span>
+            <span class="sub-bar"><span class="sub-fill" style="width:80%;
+                  background:#4ade80"></span></span>
+            <span class="sub-val" style="color:#4ade80">80<span class="sub-hint">5/6 ✓3</span></span>
+          </div>
+          <div class="sub">
+            <span class="sub-name" title="evidence_at_decisions">Evidence at decisions</span>
+            <span class="sub-bar"><span class="sub-fill" style="width:72%;
+                  background:#fbbf24"></span></span>
+            <span class="sub-val" style="color:#fbbf24">72<span class="sub-hint">3/5 ✓2</span></span>
+          </div>
+          <div class="sub">
+            <span class="sub-name" title="progressive_disclosure">Progressive disclosure</span>
+            <span class="sub-bar"><span class="sub-fill" style="width:68%;
+                  background:#fbbf24"></span></span>
+            <span class="sub-val" style="color:#fbbf24">68<span class="sub-hint">3/5 ✓1</span></span>
+          </div>
+          <div class="sub">
+            <span class="sub-name" title="context_economy">Context economy</span>
+            <span class="sub-bar"><span class="sub-fill" style="width:77%;
+                  background:#4ade80"></span></span>
+            <span class="sub-val" style="color:#4ade80">77<span class="sub-hint">5/6 ✓1</span></span>
+          </div>
+          <div class="sub">
+            <span class="sub-name" title="agent_state_awareness">Agent state awareness</span>
+            <span class="sub-bar"><span class="sub-fill" style="width:70%;
+                  background:#fbbf24"></span></span>
+            <span class="sub-val" style="color:#fbbf24">70<span class="sub-hint">3/5 ✓1</span></span>
+          </div>
+          <div class="sub sub-unmeasured">
+            <span class="sub-name" title="session_boundary_awareness">Session boundary awareness</span>
+            <span class="sub-bar sub-bar-empty"></span>
+            <span class="sub-na" title="below-threshold">thin</span>
+          </div></div>
+        </div>
+        <div class="stat">
+          <div class="stat-head">
+            <span class="stat-key">P3</span>
+            <span class="stat-name">Execution &amp; Diagnosis</span>
+            <span class="stat-score" style="color:#fbbf24">71</span>
+          </div>
+          <div class="bar"><div class="bar-fill" style="width:71%;
+               background:linear-gradient(90deg,#fbbf24,#fbbf24cc)"></div></div>
+          <div class="subs">
+          <div class="sub">
+            <span class="sub-name" title="understand_before_build">Understand before build</span>
+            <span class="sub-bar"><span class="sub-fill" style="width:76%;
+                  background:#4ade80"></span></span>
+            <span class="sub-val" style="color:#4ade80">76<span class="sub-hint">6/9 ✓4</span></span>
+          </div>
+          <div class="sub">
+            <span class="sub-name" title="root_cause_depth">Root cause depth</span>
+            <span class="sub-bar"><span class="sub-fill" style="width:70%;
+                  background:#fbbf24"></span></span>
+            <span class="sub-val" style="color:#fbbf24">70<span class="sub-hint">5/8 ✓3</span></span>
+          </div>
+          <div class="sub">
+            <span class="sub-name" title="inspect_before_edit">Inspect before edit</span>
+            <span class="sub-bar"><span class="sub-fill" style="width:68%;
+                  background:#fbbf24"></span></span>
+            <span class="sub-val" style="color:#fbbf24">68<span class="sub-hint">9/14 ✓5</span></span>
+          </div>
+          <div class="sub sub-unmeasured">
+            <span class="sub-name" title="capability_provisioning">Capability provisioning</span>
+            <span class="sub-bar sub-bar-empty"></span>
+            <span class="sub-na" title="below-threshold">thin</span>
+          </div>
+          <div class="sub sub-unmeasured">
+            <span class="sub-name" title="feedback_specificity">Feedback specificity</span>
+            <span class="sub-bar sub-bar-empty"></span>
+            <span class="sub-na" title="no-opportunity">no opp.</span>
+          </div></div>
+        </div>
+        <div class="stat">
+          <div class="stat-head">
+            <span class="stat-key">P4</span>
+            <span class="stat-name">Orchestration</span>
+            <span class="stat-score" style="color:#fbbf24">70</span>
+          </div>
+          <div class="bar"><div class="bar-fill" style="width:70%;
+               background:linear-gradient(90deg,#fbbf24,#fbbf24cc)"></div></div>
+          <div class="subs">
+          <div class="sub">
+            <span class="sub-name" title="delegation_judgment">Delegation judgment</span>
+            <span class="sub-bar"><span class="sub-fill" style="width:74%;
+                  background:#fbbf24"></span></span>
+            <span class="sub-val" style="color:#fbbf24">74<span class="sub-hint">3/5 ✓2</span></span>
+          </div>
+          <div class="sub">
+            <span class="sub-name" title="decomposition">Decomposition</span>
+            <span class="sub-bar"><span class="sub-fill" style="width:72%;
+                  background:#fbbf24"></span></span>
+            <span class="sub-val" style="color:#fbbf24">72<span class="sub-hint">3/4 ✓1</span></span>
+          </div>
+          <div class="sub">
+            <span class="sub-name" title="brief_quality">Brief quality</span>
+            <span class="sub-bar"><span class="sub-fill" style="width:68%;
+                  background:#fbbf24"></span></span>
+            <span class="sub-val" style="color:#fbbf24">68<span class="sub-hint">3/4 ✓1</span></span>
+          </div>
+          <div class="sub">
+            <span class="sub-name" title="parallelism_hygiene">Parallelism hygiene</span>
+            <span class="sub-bar"><span class="sub-fill" style="width:66%;
+                  background:#fbbf24"></span></span>
+            <span class="sub-val" style="color:#fbbf24">66<span class="sub-hint">3/4 ✓2</span></span>
+          </div>
+          <div class="sub">
+            <span class="sub-name" title="result_integration">Result integration</span>
+            <span class="sub-bar"><span class="sub-fill" style="width:65%;
+                  background:#fbbf24"></span></span>
+            <span class="sub-val" style="color:#fbbf24">65<span class="sub-hint">2/4 ✓1</span></span>
+          </div>
+          <div class="sub sub-unmeasured">
+            <span class="sub-name" title="decision_rights">Decision rights</span>
+            <span class="sub-bar sub-bar-empty"></span>
+            <span class="sub-na" title="no-opportunity">no opp.</span>
+          </div></div>
+        </div>
+        <div class="stat">
+          <div class="stat-head">
+            <span class="stat-key">P5</span>
+            <span class="stat-name">Verification</span>
+            <span class="stat-score" style="color:#fbbf24">66</span>
+          </div>
+          <div class="bar"><div class="bar-fill" style="width:66%;
+               background:linear-gradient(90deg,#fbbf24,#fbbf24cc)"></div></div>
+          <div class="subs">
+          <div class="sub">
+            <span class="sub-name" title="independent_channel">Independent channel</span>
+            <span class="sub-bar"><span class="sub-fill" style="width:70%;
+                  background:#fbbf24"></span></span>
+            <span class="sub-val" style="color:#fbbf24">70<span class="sub-hint">5/7 ✓4</span></span>
+          </div>
+          <div class="sub">
+            <span class="sub-name" title="closure">Closure</span>
+            <span class="sub-bar"><span class="sub-fill" style="width:66%;
+                  background:#fbbf24"></span></span>
+            <span class="sub-val" style="color:#fbbf24">66<span class="sub-hint">4/7 ✓4</span></span>
+          </div>
+          <div class="sub">
+            <span class="sub-name" title="falsifiable_acceptance">Falsifiable acceptance</span>
+            <span class="sub-bar"><span class="sub-fill" style="width:60%;
+                  background:#f87171"></span></span>
+            <span class="sub-val" style="color:#f87171">60<span class="sub-hint">4/6 ✓3</span></span>
+          </div>
+          <div class="sub sub-unmeasured">
+            <span class="sub-name" title="steering_calibration">Steering calibration</span>
+            <span class="sub-bar sub-bar-empty"></span>
+            <span class="sub-na" title="below-threshold">thin</span>
+          </div></div>
+        </div>
+        <div class="stat">
+          <div class="stat-head">
+            <span class="stat-key">P6</span>
+            <span class="stat-name">Memory &amp; Continuity<span class="moat-tag" title="MEGA-blind axis — our moat">◆ moat</span></span>
+            <span class="stat-score" style="color:#f87171">58</span>
+          </div>
+          <div class="bar"><div class="bar-fill" style="width:58%;
+               background:linear-gradient(90deg,#f87171,#f87171cc)"></div></div>
+          <div class="subs">
+          <div class="sub">
+            <span class="sub-name" title="decision_persistence">Decision persistence</span>
+            <span class="sub-bar"><span class="sub-fill" style="width:64%;
+                  background:#f87171"></span></span>
+            <span class="sub-val" style="color:#f87171">64<span class="sub-hint">3/5 ✓2</span></span>
+          </div>
+          <div class="sub">
+            <span class="sub-name" title="cross_session_inheritance">Cross session inheritance</span>
+            <span class="sub-bar"><span class="sub-fill" style="width:56%;
+                  background:#f87171"></span></span>
+            <span class="sub-val" style="color:#f87171">56<span class="sub-hint">2/4 ✓1</span></span>
+          </div>
+          <div class="sub">
+            <span class="sub-name" title="mistake_nonrepetition">Mistake nonrepetition</span>
+            <span class="sub-bar"><span class="sub-fill" style="width:52%;
+                  background:#f87171"></span></span>
+            <span class="sub-val" style="color:#f87171">52<span class="sub-hint">2/4 ✓1</span></span>
+          </div>
+          <div class="sub">
+            <span class="sub-name" title="rationale_recorded">Rationale recorded</span>
+            <span class="sub-bar"><span class="sub-fill" style="width:60%;
+                  background:#f87171"></span></span>
+            <span class="sub-val" style="color:#f87171">60<span class="sub-hint">2/3 ✓1</span></span>
+          </div>
+          <div class="sub sub-unmeasured">
+            <span class="sub-name" title="recovery_discipline">Recovery discipline</span>
+            <span class="sub-bar sub-bar-empty"></span>
+            <span class="sub-na" title="below-threshold">thin</span>
+          </div></div>
+        </div>
+        <div class="stat">
+          <div class="stat-head">
+            <span class="stat-key">P7</span>
+            <span class="stat-name">System-Discipline<span class="moat-tag" title="MEGA-blind axis — our moat">◆ moat</span></span>
+            <span class="stat-score" style="color:#4ade80">85</span>
+          </div>
+          <div class="bar"><div class="bar-fill" style="width:85%;
+               background:linear-gradient(90deg,#4ade80,#4ade80cc)"></div></div>
+          <div class="subs">
+          <div class="sub">
+            <span class="sub-name" title="discipline_encoded">Discipline encoded</span>
+            <span class="sub-bar"><span class="sub-fill" style="width:90%;
+                  background:#4ade80"></span></span>
+            <span class="sub-val" style="color:#4ade80">90<span class="sub-hint">5/5 ✓2</span></span>
+          </div>
+          <div class="sub">
+            <span class="sub-name" title="config_coverage">Config coverage</span>
+            <span class="sub-bar"><span class="sub-fill" style="width:84%;
+                  background:#4ade80"></span></span>
+            <span class="sub-val" style="color:#4ade80">84<span class="sub-hint">3/4 ✓2</span></span>
+          </div>
+          <div class="sub">
+            <span class="sub-name" title="automation_vs_retyping">Automation vs retyping</span>
+            <span class="sub-bar"><span class="sub-fill" style="width:82%;
+                  background:#4ade80"></span></span>
+            <span class="sub-val" style="color:#4ade80">82<span class="sub-hint">3/4 ✓1</span></span>
+          </div></div>
+        </div></div>
+    </div>
+
+    <!-- RIGHT: META + TREND + GROWTH PLAN + PROFILE/STYLE + PRACTICES -->
+    <div class="right">
+      <div class="panel">
+        <div class="panel-title">SIGNAL COVERAGE &amp; META</div>
+        
+    <div class="meta-strip" style="grid-template-columns:repeat(4,1fr);">
+      
+        <div class="meta-cell">
+          <div class="meta-label">OUTCOME</div>
+          <div class="meta-big" style="color:#5eead4">78%</div>
+          <div class="meta-sub">21/27 tasks</div>
+        </div>
+        <div class="meta-cell">
+          <div class="meta-label">EFFICIENCY</div>
+          <div class="meta-big" style="color:#a78bfa">71</div>
+          <div class="meta-sub">6.2 turns/outcome · rework 0.18</div>
+        </div>
+        <div class="meta-cell">
+          <div class="meta-label">% VERIFIED</div>
+          <div class="meta-big" style="color:#f87171">61%</div>
+          <div class="meta-sub">47/77 applied confirmed</div>
+        </div>
+        <div class="meta-cell">
+          <div class="meta-label">COVERAGE</div>
+          <div class="meta-big" style="color:#fbbf24">MEDIUM</div>
+          <div class="meta-sub">12 sessions · 47 episodes<br>2026-08-01 → 2026-09-10</div>
+        </div>
+    </div>
+    <div class="meta-note">Meta-metrics are descriptive context — NOT part of the OVERALL score.</div>
+      </div>
+
+      
+      <div class="panel">
+        <div class="panel-title">TREND · P6/P7 COMPOUNDING</div>
+        <div class="trend-legend"><span class="leg"><span class="leg-dot" style="background:#5eead4"></span>OVERALL</span><span class="leg"><span class="leg-dot" style="background:#a78bfa"></span>MEMORY (moat)</span><span class="leg"><span class="leg-dot" style="background:#a78bfa"></span>DISCIPLINE (moat)</span></div>
+        <div class="trend-svg"><svg width="560" height="150" viewBox="0 0 560 150" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="AGENTCRAFT per-week trend"><line x1="8" y1="124.0" x2="552" y2="124.0" stroke="#262a44" stroke-width="1" opacity="0.5"/><line x1="8" y1="96.5" x2="552" y2="96.5" stroke="#262a44" stroke-width="1" opacity="0.5"/><line x1="8" y1="69.0" x2="552" y2="69.0" stroke="#262a44" stroke-width="1" opacity="0.5"/><line x1="8" y1="41.5" x2="552" y2="41.5" stroke="#262a44" stroke-width="1" opacity="0.5"/><line x1="8" y1="14.0" x2="552" y2="14.0" stroke="#262a44" stroke-width="1" opacity="0.5"/><text x="8.0" y="142" fill="#5a6088" font-size="10" text-anchor="start" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif">W34</text><text x="280.0" y="142" fill="#5a6088" font-size="10" text-anchor="middle" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif">W35</text><text x="552.0" y="142" fill="#5a6088" font-size="10" text-anchor="end" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif">W36</text><polyline points="8.0,49.2 280.0,45.9 552.0,42.6" fill="none" stroke="#5eead4" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="552.0" cy="42.6" r="3.5" fill="#5eead4"/><text x="546.0" y="36.6" fill="#5eead4" font-size="11" font-weight="800" text-anchor="end" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif">74</text><polyline points="8.0,71.2 280.0,64.6 552.0,60.2" fill="none" stroke="#a78bfa" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="552.0" cy="60.2" r="3.5" fill="#a78bfa"/><text x="546.0" y="54.2" fill="#a78bfa" font-size="11" font-weight="800" text-anchor="end" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif">58</text><polyline points="8.0,42.6 280.0,36.0 552.0,30.5" fill="none" stroke="#a78bfa" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="552.0" cy="30.5" r="3.5" fill="#a78bfa"/><text x="546.0" y="24.5" fill="#a78bfa" font-size="11" font-weight="800" text-anchor="end" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif">85</text></svg></div>
+        <div class="desc-note">The moat lines rising over weeks is the whole thesis — continuity + discipline compound.</div>
+      </div>
+
+      <div class="panel">
+        <div class="growth-head">
+          <div class="growth-title">GROWTH PLAN</div>
+          <div class="growth-target">coaching threshold: <b>75</b> (gold line)</div>
+        </div>
+        
+        <div class="coach">
+          <div class="coach-head">
+            <span class="coach-pill">P5</span>
+            <span class="coach-title">Close the loop, independently</span>
+          </div>
+          <div class="coach-row"><span class="lbl weak-lbl">WEAK</span>
+               <span class="txt">In 5/20 verification episodes a completion claim had no captured, falsifiable receipt (falsifiable_acceptance applied 4/6).</span></div>
+          <div class="coach-row"><span class="lbl">WHY</span>
+               <span class="txt">Unverified &#x27;looks right&#x27; claims regress and erode a reviewer&#x27;s trust; the bug returns next session.</span></div>
+          <div class="coach-row"><span class="lbl how-lbl">HOW</span>
+               <span class="txt">After each Edit/Write, run the real pass/fail gate (pytest / tsc / HTTP status) and paste the exit line as the closure receipt.</span></div>
+          <div class="coach-example">Run: python -c &#x27;import py_compile; py_compile.compile(&quot;x.py&quot;, doraise=True)&#x27; and paste the trace.</div>
+          <div class="coach-retest">↻ next scan: Next scan: applied/eligible on closure + falsifiable_acceptance (episodes with a captured pass/fail receipt).</div>
+        </div>
+        <div class="coach">
+          <div class="coach-head">
+            <span class="coach-pill">P6</span>
+            <span class="coach-title">Make continuity systematic</span>
+          </div>
+          <div class="coach-row"><span class="lbl weak-lbl">WEAK</span>
+               <span class="txt">cross_session_inheritance applied 2/4 and mistake_nonrepetition applied 2/4 — inheritance is ad-hoc, not automated at boot.</span></div>
+          <div class="coach-row"><span class="lbl">WHY</span>
+               <span class="txt">Without automated recall, each session starts closer to blind and re-derives what was already decided — wasted context.</span></div>
+          <div class="coach-row"><span class="lbl how-lbl">HOW</span>
+               <span class="txt">Add a session-start recall step that reads the prior handoff/ADR before the first task; encode it as a hook or skill so it always runs.</span></div>
+          <div class="coach-example">At boot: read SESSION_HANDOFF.md + the newest ADR, then summarize the inherited decisions in one line.</div>
+          <div class="coach-retest">↻ next scan: Next scan: applied/eligible on cross_session_inheritance (turns that reference an earlier decision at boot).</div>
+        </div>
+        
+    <div class="panel-title">STRENGTHS</div>
+    <div class="strengths">
+        <div class="strength">
+          <span class="strength-pill">P7</span>
+          <span class="strength-txt">Discipline is encoded in CLAUDE.md + skills + hooks — you get full credit without re-typing (the fairness win).</span>
+        </div>
+        <div class="strength">
+          <span class="strength-pill"></span>
+          <span class="strength-txt">P1 framing is consistently clear with checkable acceptance criteria.</span>
+        </div></div>
+      </div>
+
+      
+      <div class="panel">
+        <div class="panel-title">PROFILE &amp; STYLE</div>
+        <div class="chip-group"><div class="chip-cap">PROFILE</div><div class="chips"><span class="chip"><span class="chip-k">role</span><span class="chip-v">solo founder / full-stack builder</span></span><span class="chip"><span class="chip-k">exp</span><span class="chip-v">senior</span></span><span class="chip"><span class="chip-k">team</span><span class="chip-v">solo</span></span><span class="chip"><span class="chip-k">goal</span><span class="chip-v">ship a local-first developer-assessment tool</span></span></div></div><div class="chip-group"><div class="chip-cap">STYLE</div><div class="chips"><span class="chip"><span class="chip-k">paradigm</span><span class="chip-v">pragmatic OO + functional</span></span><span class="chip"><span class="chip-k">typing</span><span class="chip-v">strict type-hints</span></span><span class="chip"><span class="chip-k">testing</span><span class="chip-v">self-verify + fixtures</span></span><span class="chip"><span class="chip-k">arch</span><span class="chip-v">single-source contract (SPEC-driven)</span></span><span class="chip"><span class="chip-k">errors</span><span class="chip-v">fail-loud</span></span><span class="chip"><span class="chip-k">abstraction</span><span class="chip-v">low, direct</span></span></div></div>
+        <div class="desc-note">Inferred from history — descriptive, never scored.</div>
+      </div>
+
+      
+      <div class="panel">
+        <div class="panel-title">PRACTICES &amp; ANTI-PATTERNS</div>
+        <div class="pa-sub-title">DURABLE PRACTICES</div>
+          <div class="pa-row pa-good">
+            <span class="pa-pill pa-pill-good">P5</span>
+            <span class="pa-txt">pastes the exit line as a closure receipt</span>
+          </div>
+          <div class="pa-row pa-good">
+            <span class="pa-pill pa-pill-good">P7</span>
+            <span class="pa-txt">encodes standing rules in CLAUDE.md instead of re-typing</span>
+          </div><div class="pa-sub-title pa-sub-bad">ANTI-PATTERNS &amp; COSTS</div>
+          <div class="pa-row pa-bad">
+            <span class="pa-pill pa-pill-bad">P3</span>
+            <span class="pa-txt">3/14 edits landed before a Read on the same path<span class="pa-cost" style="color:#f87171;border-color:#f8717166">rework</span></span>
+          </div>
+          <div class="pa-row pa-bad">
+            <span class="pa-pill pa-pill-bad">P6</span>
+            <span class="pa-txt">some sessions re-derived decisions already persisted in a handoff<span class="pa-cost" style="color:#fbbf24;border-color:#fbbf2466">wasted-context</span></span>
+          </div>
+        <div class="desc-note">Brave-honest in both directions — descriptive, never scored.</div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <b>AGENTCRAFT</b> · 100% local, no telemetry, no send · open-source (MIT) ·
+      inspired by MEGA.dev, built deeper + private + coaching.
+    </div>
+  </div>
+</body>
+</html>

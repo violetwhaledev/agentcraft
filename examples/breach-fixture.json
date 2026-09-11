@@ -1,0 +1,940 @@
+{
+  "agentcraft_version": "2",
+  "brand": "AGENTCRAFT",
+  "generated_at": "2026-09-11T00:00:00Z",
+  "subject": {
+    "label": "local-user",
+    "repo_path": "C:/Users/example/Desktop/sample-repo"
+  },
+  "coverage": {
+    "sessions": 12,
+    "episodes": 47,
+    "task_episodes": 47,
+    "distinct_active_days": 18,
+    "task_classes_covered": 7,
+    "window": {
+      "from": "2026-08-01",
+      "to": "2026-09-10"
+    },
+    "confidence": "medium",
+    "sub_sampled": false
+  },
+  "meta_metrics": {
+    "outcome_rate": {
+      "pct": 78,
+      "completed": 21,
+      "attempted": 27
+    },
+    "efficiency": {
+      "index": 71,
+      "turns_per_outcome": 6.2,
+      "rework_ratio": 0.18,
+      "context_reuse": 0.62
+    },
+    "verified_rate": {
+      "pct": 61,
+      "verified": 47,
+      "applied": 77
+    },
+    "coverage_ref": "see coverage block"
+  },
+  "weights": {
+    "P1": 0.16,
+    "P2": 0.16,
+    "P3": 0.15,
+    "P4": 0.13,
+    "P5": 0.16,
+    "P6": 0.12,
+    "P7": 0.12
+  },
+  "measurement_status": {
+    "overall": "measured",
+    "note": "sidechains sampled; compaction partial; delegation observed"
+  },
+  "capability_gating": {
+    "observable": [
+      "message",
+      "retrieval",
+      "mutation",
+      "verification",
+      "delegation",
+      "configuration",
+      "attachment"
+    ],
+    "partial": [
+      "compaction",
+      "branch"
+    ],
+    "gated_out": []
+  },
+  "pillars": {
+    "P1": {
+      "name": "Intent & Framing",
+      "eligible": true,
+      "measurement_status": "measured",
+      "score": 82,
+      "limitations": null,
+      "moat": false,
+      "partition": {
+        "eligible": 26,
+        "applied": 19,
+        "declined": 3,
+        "missed": 4,
+        "verified_outcome": 9
+      },
+      "sub_signals": {
+        "goal_clarity": {
+          "score": 88,
+          "measurement_status": "measured",
+          "capability": "message",
+          "eligible": 8,
+          "applied": 6,
+          "declined": 1,
+          "missed": 1,
+          "verified_outcome": 3,
+          "limitations": null,
+          "evidence": [
+            {
+              "session": "s3",
+              "turn": 4,
+              "note": "names concrete artifact + bounded scope"
+            }
+          ]
+        },
+        "problem_framing": {
+          "score": 80,
+          "measurement_status": "measured",
+          "capability": "message",
+          "eligible": 6,
+          "applied": 4,
+          "declined": 1,
+          "missed": 1,
+          "verified_outcome": 2,
+          "limitations": null,
+          "evidence": [
+            {
+              "session": "s3",
+              "turn": 4,
+              "note": "AskUserQuestion X or Y clarify"
+            }
+          ]
+        },
+        "acceptance_defined": {
+          "score": 78,
+          "measurement_status": "measured",
+          "capability": "message",
+          "eligible": 7,
+          "applied": 5,
+          "declined": 1,
+          "missed": 1,
+          "verified_outcome": 3,
+          "limitations": null,
+          "evidence": [
+            {
+              "session": "s5",
+              "turn": 2,
+              "note": "done when tests green"
+            }
+          ]
+        },
+        "constraint_precision": {
+          "score": 74,
+          "measurement_status": "measured",
+          "capability": "message",
+          "eligible": 5,
+          "applied": 4,
+          "declined": 0,
+          "missed": 1,
+          "verified_outcome": 1,
+          "limitations": null,
+          "evidence": [
+            {
+              "session": "s7",
+              "turn": 1,
+              "note": "perf budget + do-not-touch X stated"
+            }
+          ]
+        }
+      },
+      "evidence": [
+        {
+          "session": "s3",
+          "turn": 4,
+          "note": "clear framing with acceptance"
+        }
+      ]
+    },
+    "P2": {
+      "name": "Context & Grounding",
+      "eligible": true,
+      "measurement_status": "measured",
+      "score": 74,
+      "limitations": null,
+      "moat": false,
+      "partition": {
+        "eligible": 27,
+        "applied": 19,
+        "declined": 2,
+        "missed": 6,
+        "verified_outcome": 8
+      },
+      "sub_signals": {
+        "artifact_anchoring": {
+          "score": 80,
+          "measurement_status": "measured",
+          "capability": "retrieval",
+          "eligible": 6,
+          "applied": 5,
+          "declined": 0,
+          "missed": 1,
+          "verified_outcome": 3,
+          "limitations": null,
+          "evidence": [
+            {
+              "session": "s2",
+              "turn": 8,
+              "note": "cites path:line + stacktrace"
+            }
+          ]
+        },
+        "evidence_at_decisions": {
+          "score": 72,
+          "measurement_status": "measured",
+          "capability": "retrieval",
+          "eligible": 5,
+          "applied": 3,
+          "declined": 1,
+          "missed": 1,
+          "verified_outcome": 2,
+          "limitations": null,
+          "evidence": [
+            {
+              "session": "s2",
+              "turn": 9,
+              "note": "tool_result referenced at decision"
+            }
+          ]
+        },
+        "progressive_disclosure": {
+          "score": 68,
+          "measurement_status": "measured",
+          "capability": "message",
+          "eligible": 5,
+          "applied": 3,
+          "declined": 1,
+          "missed": 1,
+          "verified_outcome": 1,
+          "limitations": null,
+          "evidence": [
+            {
+              "session": "s6",
+              "turn": 12,
+              "note": "context staged at decision point"
+            }
+          ]
+        },
+        "context_economy": {
+          "score": 77,
+          "measurement_status": "measured",
+          "capability": "configuration",
+          "eligible": 6,
+          "applied": 5,
+          "declined": 0,
+          "missed": 1,
+          "verified_outcome": 1,
+          "limitations": null,
+          "evidence": [
+            {
+              "session": "s6",
+              "turn": 3,
+              "note": "healthy cache_read vs cache_creation"
+            }
+          ]
+        },
+        "agent_state_awareness": {
+          "score": 70,
+          "measurement_status": "measured",
+          "capability": "message",
+          "eligible": 5,
+          "applied": 3,
+          "declined": 0,
+          "missed": 2,
+          "verified_outcome": 1,
+          "limitations": null,
+          "evidence": [
+            {
+              "session": "s6",
+              "turn": 14,
+              "note": "builds on file you just read"
+            }
+          ]
+        },
+        "session_boundary_awareness": {
+          "score": null,
+          "measurement_status": "unmeasured",
+          "capability": "compaction",
+          "eligible": 2,
+          "applied": 1,
+          "declined": 0,
+          "missed": 1,
+          "verified_outcome": 0,
+          "limitations": "below-threshold",
+          "evidence": []
+        }
+      },
+      "evidence": [
+        {
+          "session": "s2",
+          "turn": 8,
+          "note": "decisions grounded in real artifacts"
+        }
+      ]
+    },
+    "P3": {
+      "name": "Execution & Diagnosis",
+      "eligible": true,
+      "measurement_status": "measured",
+      "score": 71,
+      "limitations": null,
+      "moat": false,
+      "partition": {
+        "eligible": 33,
+        "applied": 22,
+        "declined": 4,
+        "missed": 7,
+        "verified_outcome": 12
+      },
+      "sub_signals": {
+        "understand_before_build": {
+          "score": 76,
+          "measurement_status": "measured",
+          "capability": "retrieval",
+          "eligible": 9,
+          "applied": 6,
+          "declined": 1,
+          "missed": 2,
+          "verified_outcome": 4,
+          "limitations": null,
+          "evidence": [
+            {
+              "session": "s4",
+              "turn": 6,
+              "note": "Grep before first Edit"
+            }
+          ]
+        },
+        "root_cause_depth": {
+          "score": 70,
+          "measurement_status": "measured",
+          "capability": "mutation",
+          "eligible": 8,
+          "applied": 5,
+          "declined": 1,
+          "missed": 2,
+          "verified_outcome": 3,
+          "limitations": null,
+          "evidence": [
+            {
+              "session": "s4",
+              "turn": 40,
+              "note": "Root cause: named + reproduced"
+            }
+          ]
+        },
+        "inspect_before_edit": {
+          "score": 68,
+          "measurement_status": "measured",
+          "capability": "mutation",
+          "eligible": 14,
+          "applied": 9,
+          "declined": 2,
+          "missed": 3,
+          "verified_outcome": 999,
+          "limitations": null,
+          "evidence": [
+            {
+              "session": "s3",
+              "turn": 12,
+              "note": "Read x.py before Edit x.py (9/14)"
+            }
+          ]
+        },
+        "capability_provisioning": {
+          "score": null,
+          "measurement_status": "unmeasured",
+          "capability": "configuration",
+          "eligible": 2,
+          "applied": 2,
+          "declined": 0,
+          "missed": 0,
+          "verified_outcome": 0,
+          "limitations": "below-threshold",
+          "evidence": []
+        },
+        "feedback_specificity": {
+          "score": null,
+          "measurement_status": "unmeasured",
+          "capability": "message",
+          "eligible": 0,
+          "applied": 0,
+          "declined": 0,
+          "missed": 0,
+          "verified_outcome": 0,
+          "limitations": "no-opportunity",
+          "evidence": []
+        }
+      },
+      "evidence": [
+        {
+          "session": "s4",
+          "turn": 40,
+          "note": "cause named before fix"
+        }
+      ]
+    },
+    "P4": {
+      "name": "Orchestration",
+      "eligible": true,
+      "measurement_status": "measured",
+      "score": 70,
+      "limitations": null,
+      "moat": false,
+      "partition": {
+        "eligible": 21,
+        "applied": 14,
+        "declined": 3,
+        "missed": 4,
+        "verified_outcome": 7
+      },
+      "sub_signals": {
+        "delegation_judgment": {
+          "score": 74,
+          "measurement_status": "measured",
+          "capability": "delegation",
+          "eligible": 5,
+          "applied": 3,
+          "declined": 1,
+          "missed": 1,
+          "verified_outcome": 2,
+          "limitations": null,
+          "evidence": [
+            {
+              "session": "s8",
+              "turn": 3,
+              "note": "big work spawned Task; trivia inline"
+            }
+          ]
+        },
+        "decomposition": {
+          "score": 72,
+          "measurement_status": "measured",
+          "capability": "delegation",
+          "eligible": 4,
+          "applied": 3,
+          "declined": 0,
+          "missed": 1,
+          "verified_outcome": 1,
+          "limitations": null,
+          "evidence": [
+            {
+              "session": "s8",
+              "turn": 4,
+              "note": "TaskCreate sized units"
+            }
+          ]
+        },
+        "brief_quality": {
+          "score": 68,
+          "measurement_status": "measured",
+          "capability": "delegation",
+          "eligible": 4,
+          "applied": 3,
+          "declined": 0,
+          "missed": 1,
+          "verified_outcome": 1,
+          "limitations": null,
+          "evidence": [
+            {
+              "session": "s8",
+              "turn": 5,
+              "note": "brief has goal+context+done-when"
+            }
+          ]
+        },
+        "parallelism_hygiene": {
+          "score": 66,
+          "measurement_status": "measured",
+          "capability": "delegation",
+          "eligible": 4,
+          "applied": 3,
+          "declined": 1,
+          "missed": 0,
+          "verified_outcome": 2,
+          "limitations": null,
+          "evidence": [
+            {
+              "session": "s8",
+              "turn": 6,
+              "note": "parallel spawns disjoint files"
+            }
+          ]
+        },
+        "result_integration": {
+          "score": 65,
+          "measurement_status": "measured",
+          "capability": "verification",
+          "eligible": 4,
+          "applied": 2,
+          "declined": 1,
+          "missed": 1,
+          "verified_outcome": 1,
+          "limitations": null,
+          "evidence": [
+            {
+              "session": "s8",
+              "turn": 20,
+              "note": "main thread verifies returns"
+            }
+          ]
+        },
+        "decision_rights": {
+          "score": null,
+          "measurement_status": "unmeasured",
+          "capability": "delegation",
+          "eligible": 0,
+          "applied": 0,
+          "declined": 0,
+          "missed": 0,
+          "verified_outcome": 0,
+          "limitations": "no-opportunity",
+          "evidence": []
+        }
+      },
+      "evidence": [
+        {
+          "session": "s8",
+          "turn": 3,
+          "note": "sound delegate-vs-inline calls"
+        }
+      ]
+    },
+    "P5": {
+      "name": "Verification",
+      "eligible": true,
+      "measurement_status": "measured",
+      "score": 66,
+      "limitations": null,
+      "moat": false,
+      "partition": {
+        "eligible": 20,
+        "applied": 13,
+        "declined": 2,
+        "missed": 5,
+        "verified_outcome": 11
+      },
+      "sub_signals": {
+        "independent_channel": {
+          "score": 70,
+          "measurement_status": "measured",
+          "capability": "verification",
+          "eligible": 7,
+          "applied": 5,
+          "declined": 1,
+          "missed": 1,
+          "verified_outcome": 4,
+          "limitations": null,
+          "evidence": [
+            {
+              "session": "s5",
+              "turn": 30,
+              "note": "Bash pytest after Edit"
+            }
+          ]
+        },
+        "closure": {
+          "score": 66,
+          "measurement_status": "measured",
+          "capability": "verification",
+          "eligible": 7,
+          "applied": 4,
+          "declined": 1,
+          "missed": 2,
+          "verified_outcome": 4,
+          "limitations": null,
+          "evidence": [
+            {
+              "session": "s5",
+              "turn": 31,
+              "note": "captured 26/26 PASS in tool_result"
+            }
+          ]
+        },
+        "falsifiable_acceptance": {
+          "score": 60,
+          "measurement_status": "measured",
+          "capability": "verification",
+          "eligible": 6,
+          "applied": 4,
+          "declined": 0,
+          "missed": 2,
+          "verified_outcome": 3,
+          "limitations": null,
+          "evidence": [
+            {
+              "session": "s5",
+              "turn": 32,
+              "note": "real pass/fail type-check gate"
+            }
+          ]
+        },
+        "steering_calibration": {
+          "score": null,
+          "measurement_status": "unmeasured",
+          "capability": "message",
+          "eligible": 1,
+          "applied": 1,
+          "declined": 0,
+          "missed": 0,
+          "verified_outcome": 0,
+          "limitations": "below-threshold",
+          "evidence": []
+        }
+      },
+      "evidence": [
+        {
+          "session": "s5",
+          "turn": 30,
+          "note": "independent verification on most changes"
+        }
+      ]
+    },
+    "P6": {
+      "name": "Memory & Continuity",
+      "eligible": true,
+      "measurement_status": "measured",
+      "score": 58,
+      "limitations": null,
+      "moat": true,
+      "partition": {
+        "eligible": 18,
+        "applied": 11,
+        "declined": 1,
+        "missed": 6,
+        "verified_outcome": 5
+      },
+      "sub_signals": {
+        "decision_persistence": {
+          "score": 64,
+          "measurement_status": "measured",
+          "capability": "configuration",
+          "eligible": 5,
+          "applied": 3,
+          "declined": 0,
+          "missed": 2,
+          "verified_outcome": 2,
+          "limitations": null,
+          "evidence": [
+            {
+              "session": "s9",
+              "turn": 1,
+              "note": "SESSION_HANDOFF.md written"
+            }
+          ]
+        },
+        "cross_session_inheritance": {
+          "score": 56,
+          "measurement_status": "measured",
+          "capability": "configuration",
+          "eligible": 4,
+          "applied": 2,
+          "declined": 0,
+          "missed": 2,
+          "verified_outcome": 1,
+          "limitations": null,
+          "evidence": [
+            {
+              "session": "s10",
+              "turn": 1,
+              "note": "boot recall reads earlier decision"
+            }
+          ]
+        },
+        "mistake_nonrepetition": {
+          "score": 52,
+          "measurement_status": "measured",
+          "capability": "message",
+          "eligible": 4,
+          "applied": 2,
+          "declined": 1,
+          "missed": 1,
+          "verified_outcome": 1,
+          "limitations": null,
+          "evidence": [
+            {
+              "session": "s10",
+              "turn": 20,
+              "note": "BUG_FIX recorded; not repeated"
+            }
+          ]
+        },
+        "rationale_recorded": {
+          "score": 60,
+          "measurement_status": "measured",
+          "capability": "configuration",
+          "eligible": 3,
+          "applied": 2,
+          "declined": 0,
+          "missed": 1,
+          "verified_outcome": 1,
+          "limitations": null,
+          "evidence": [
+            {
+              "session": "s9",
+              "turn": 2,
+              "note": "ADR carries why + provenance"
+            }
+          ]
+        },
+        "recovery_discipline": {
+          "score": null,
+          "measurement_status": "unmeasured",
+          "capability": "verification",
+          "eligible": 2,
+          "applied": 2,
+          "declined": 0,
+          "missed": 0,
+          "verified_outcome": 0,
+          "limitations": "below-threshold",
+          "evidence": []
+        }
+      },
+      "evidence": [
+        {
+          "session": "s9",
+          "turn": 1,
+          "note": "durable memory + one demonstrated inheritance"
+        }
+      ]
+    },
+    "P7": {
+      "name": "System-Discipline",
+      "eligible": true,
+      "measurement_status": "measured",
+      "score": 85,
+      "limitations": null,
+      "moat": true,
+      "partition": {
+        "eligible": 13,
+        "applied": 11,
+        "declined": 0,
+        "missed": 2,
+        "verified_outcome": 5
+      },
+      "sub_signals": {
+        "discipline_encoded": {
+          "score": 90,
+          "measurement_status": "measured",
+          "capability": "configuration",
+          "eligible": 5,
+          "applied": 5,
+          "declined": 0,
+          "missed": 0,
+          "verified_outcome": 2,
+          "limitations": null,
+          "evidence": [
+            {
+              "session": "repo",
+              "turn": 0,
+              "note": "layered CLAUDE.md + skills + hooks"
+            }
+          ]
+        },
+        "config_coverage": {
+          "score": 84,
+          "measurement_status": "measured",
+          "capability": "configuration",
+          "eligible": 4,
+          "applied": 3,
+          "declined": 0,
+          "missed": 1,
+          "verified_outcome": 2,
+          "limitations": null,
+          "evidence": [
+            {
+              "session": "repo",
+              "turn": 0,
+              "note": "settings hooks + CI honored"
+            }
+          ]
+        },
+        "automation_vs_retyping": {
+          "score": 82,
+          "measurement_status": "measured",
+          "capability": "configuration",
+          "eligible": 4,
+          "applied": 3,
+          "declined": 0,
+          "missed": 1,
+          "verified_outcome": 1,
+          "limitations": null,
+          "evidence": [
+            {
+              "session": "repo",
+              "turn": 0,
+              "note": "sparse retype + dense config = fairness win"
+            }
+          ]
+        }
+      },
+      "evidence": [
+        {
+          "session": "repo",
+          "turn": 0,
+          "note": "rigor encoded, not re-typed"
+        }
+      ]
+    }
+  },
+  "overall": {
+    "score": 72,
+    "tier": "silver"
+  },
+  "coaching": [
+    {
+      "pillar": "P5",
+      "title": "Close the loop, independently",
+      "weak": "In 5/20 verification episodes a completion claim had no captured, falsifiable receipt (falsifiable_acceptance applied 4/6).",
+      "why": "Unverified 'looks right' claims regress and erode a reviewer's trust; the bug returns next session.",
+      "how": "After each Edit/Write, run the real pass/fail gate (pytest / tsc / HTTP status) and paste the exit line as the closure receipt.",
+      "example": "Run: python -c 'import py_compile; py_compile.compile(\"x.py\", doraise=True)' and paste the trace.",
+      "retest_tip": "Next scan: applied/eligible on closure + falsifiable_acceptance (episodes with a captured pass/fail receipt)."
+    },
+    {
+      "pillar": "P6",
+      "title": "Make continuity systematic",
+      "weak": "cross_session_inheritance applied 2/4 and mistake_nonrepetition applied 2/4 \u2014 inheritance is ad-hoc, not automated at boot.",
+      "why": "Without automated recall, each session starts closer to blind and re-derives what was already decided \u2014 wasted context.",
+      "how": "Add a session-start recall step that reads the prior handoff/ADR before the first task; encode it as a hook or skill so it always runs.",
+      "example": "At boot: read SESSION_HANDOFF.md + the newest ADR, then summarize the inherited decisions in one line.",
+      "retest_tip": "Next scan: applied/eligible on cross_session_inheritance (turns that reference an earlier decision at boot)."
+    }
+  ],
+  "strengths": [
+    {
+      "pillar": "P7",
+      "note": "Discipline is encoded in CLAUDE.md + skills + hooks \u2014 you get full credit without re-typing (the fairness win)."
+    },
+    "P1 framing is consistently clear with checkable acceptance criteria."
+  ],
+  "measurement_status_note": "P2.session_boundary_awareness, P3.capability_provisioning/feedback_specificity, P4.decision_rights, P5.steering_calibration, P6.recovery_discipline are unmeasured (below-threshold / no-opportunity) and excluded from their pillar averages.",
+  "profile": {
+    "role": "solo founder / full-stack builder",
+    "experience": "senior",
+    "team": "solo",
+    "goal": "ship a local-first developer-assessment tool"
+  },
+  "style": {
+    "paradigm": "pragmatic OO + functional",
+    "typing": "strict type-hints",
+    "testing": "self-verify + fixtures",
+    "architecture": "single-source contract (SPEC-driven)",
+    "error_handling": "fail-loud",
+    "abstraction": "low, direct"
+  },
+  "work_mix": {
+    "feature": 14,
+    "bugfix": 9,
+    "refactor": 4,
+    "debug": 8,
+    "test": 3,
+    "docs": 5,
+    "ops": 2,
+    "research": 1,
+    "review": 1
+  },
+  "collaboration_shape": {
+    "corrections": 11,
+    "re_instructions": 6,
+    "restarts": 2,
+    "median_turns": 6,
+    "max_concurrency": 6
+  },
+  "trend": [
+    {
+      "week": "2026-W34",
+      "overall": 68,
+      "P6": 48,
+      "P7": 74
+    },
+    {
+      "week": "2026-W35",
+      "overall": 71,
+      "P6": 54,
+      "P7": 80
+    },
+    {
+      "week": "2026-W36",
+      "overall": 74,
+      "P6": 58,
+      "P7": 85
+    }
+  ],
+  "practices": [
+    {
+      "area": "P5",
+      "habit": "pastes the exit line as a closure receipt",
+      "evidence": [
+        {
+          "session": "s5",
+          "turn": 31
+        }
+      ]
+    },
+    {
+      "area": "P7",
+      "habit": "encodes standing rules in CLAUDE.md instead of re-typing",
+      "evidence": [
+        {
+          "session": "repo",
+          "turn": 0
+        }
+      ]
+    }
+  ],
+  "anti_patterns": [
+    {
+      "area": "P3",
+      "cost": "rework",
+      "observation": "3/14 edits landed before a Read on the same path",
+      "evidence": [
+        {
+          "session": "s4",
+          "turn": 9
+        }
+      ]
+    },
+    {
+      "area": "P6",
+      "cost": "wasted-context",
+      "observation": "some sessions re-derived decisions already persisted in a handoff",
+      "evidence": [
+        {
+          "session": "s10",
+          "turn": 2
+        }
+      ]
+    }
+  ],
+  "config": {
+    "target": 75,
+    "tier_bands": {
+      "diamond": 85,
+      "gold": 75,
+      "silver": 65
+    },
+    "credit_positive": true,
+    "fairness_rule": true,
+    "measurement_threshold": 3
+  },
+  "_comment": "DELIBERATE containment breach fixture for renderer fail-loud test. verified_outcome > applied. MUST exit 2. Not a real scan."
+}

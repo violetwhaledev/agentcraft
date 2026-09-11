@@ -1,0 +1,139 @@
+{
+  "agentcraft_version": "1",
+  "brand": "AGENTCRAFT",
+  "generated_at": "2026-09-11T00:00:00Z",
+  "_note": "SYNTHETIC FIXTURE — hand-authored, not a real user scan. For docs/tests/renderer demo only. See examples/README.md.",
+  "subject": {
+    "label": "synthetic-demo-user",
+    "repo_path": "C:/Users/example/Desktop/demo-repo"
+  },
+  "coverage": {
+    "sessions": 9,
+    "episodes": 34,
+    "window": { "from": "2026-08-10", "to": "2026-09-10" },
+    "confidence": "medium"
+  },
+  "meta_metrics": {
+    "outcome_rate": { "pct": 76, "completed": 19, "attempted": 25 },
+    "efficiency": { "index": 70, "turns_per_outcome": 6.4, "rework_ratio": 0.19, "context_reuse": 0.61 },
+    "coverage_ref": "see coverage block"
+  },
+  "weights": {
+    "P1": 0.16, "P2": 0.16, "P3": 0.15, "P4": 0.13,
+    "P5": 0.16, "P6": 0.12, "P7": 0.12
+  },
+  "pillars": {
+    "P1": {
+      "name": "Intent & Framing",
+      "eligible": true,
+      "score": 82,
+      "sub_signals": { "goal_clarity": 88, "problem_framing": 80, "acceptance_defined": 78 },
+      "evidence": [
+        { "session": "s3", "turn": 12, "note": "clear 'done when the smoke test exits 0'" },
+        { "session": "s7", "turn": 4, "note": "re-scoped a solution-dictated ask back to the problem level" }
+      ]
+    },
+    "P2": {
+      "name": "Context & Grounding",
+      "eligible": true,
+      "score": 77,
+      "sub_signals": { "artifact_anchoring": 82, "evidence_at_decisions": 80, "context_economy": 68, "agent_state_awareness": 78 },
+      "evidence": [
+        { "session": "s4", "turn": 9, "note": "pasted the failing traceback + file:line at the decision point" }
+      ]
+    },
+    "P3": {
+      "name": "Execution & Diagnosis",
+      "eligible": true,
+      "score": 63,
+      "sub_signals": { "understand_before_build": 68, "root_cause_depth": 55, "inspect_before_edit": 66 },
+      "evidence": [
+        { "session": "s5", "turn": 21, "note": "3/5 debug episodes patched first symptom without reproducing cause" }
+      ]
+    },
+    "P4": {
+      "name": "Orchestration",
+      "eligible": true,
+      "score": 76,
+      "sub_signals": { "delegation_judgment": 82, "decomposition": 74, "brief_quality": 73, "parallelism_hygiene": 76, "result_integration": 74 },
+      "evidence": [
+        { "session": "s6", "turn": 3, "note": "correctly chose inline over spawning for a <20 LOC fix" }
+      ]
+    },
+    "P5": {
+      "name": "Verification",
+      "eligible": true,
+      "score": 66,
+      "sub_signals": { "independent_channel": 62, "closure": 70, "falsifiable_acceptance": 66 },
+      "evidence": [
+        { "session": "s8", "turn": 15, "note": "2/6 completion claims accepted on 'the agent says it works' with no independent run" }
+      ]
+    },
+    "P6": {
+      "name": "Memory & Continuity",
+      "eligible": true,
+      "score": 58,
+      "sub_signals": { "decision_persistence": 60, "cross_session_inheritance": 55, "mistake_nonrepetition": 59 },
+      "evidence": [
+        { "session": "s2", "turn": 1, "note": "same env-var bug recurred in s5 that was already solved in s2 — not recorded" }
+      ],
+      "moat": true
+    },
+    "P7": {
+      "name": "System-Discipline",
+      "eligible": true,
+      "score": 85,
+      "sub_signals": { "discipline_encoded": 88, "config_coverage": 84, "automation_vs_retyping": 83 },
+      "evidence": [
+        { "file": "CLAUDE.md", "note": "verify gate + orchestration rule encoded; agent honored it across sessions" },
+        { "file": ".claude/skills/", "note": "two standing runbooks used instead of re-typed prompts" }
+      ],
+      "moat": true
+    }
+  },
+  "overall": {
+    "score": 72,
+    "tier": "silver"
+  },
+  "coaching": [
+    {
+      "pillar": "P3",
+      "title": "Root-cause over symptom",
+      "weak": "In 3/5 debug episodes the first failing symptom was patched without reproducing the cause.",
+      "why": "Symptom patches regress; the bug returns next session and burns turns + trust.",
+      "how": "Make it a personal reflex: your next debugs, reproduce first and say the cause in one sentence yourself before you touch anything — then fix the cause, not the stack-trace line.",
+      "example": "Before your next fix, say to yourself: 'Root cause: pool connection shared across coroutines.' — then fix that.",
+      "retest_tip": "Next scan, watch your own root_cause_depth — aim to feel yourself state a cause before the fix in every debug episode you run."
+    },
+    {
+      "pillar": "P5",
+      "title": "Verify through a different channel",
+      "weak": "2/6 completion claims were accepted because the agent said so, with no independent run.",
+      "why": "The channel that made the claim can't also be the proof — that's how silent breakage ships.",
+      "how": "Make it a personal rule: you don't accept 'done' until YOU have run or inspected the artifact through a different channel than the one that claimed it. Your next completions, prove it yourself before you believe it.",
+      "example": "Next time an agent says 'it works', tell yourself: 'I'll believe it once I've run it and seen the result myself' — then do.",
+      "retest_tip": "Next scan, watch your own verification — aim to feel the reflex to independently prove every 'done' before you accept it."
+    },
+    {
+      "pillar": "P6",
+      "title": "Persist decisions so mistakes don't repeat",
+      "weak": "An env-var bug solved in session 2 recurred in session 5 because it was never written down.",
+      "why": "Un-persisted knowledge is re-derived every session — you pay for the same lesson twice.",
+      "how": "Make it a personal closing habit: after any non-trivial fix, take 30 seconds to write down — in your own words — the one lesson future-you will need, before you move on. Your next 5 fixes, end by leaving that note for yourself.",
+      "example": "Before you move on, write yourself a line: 'Learned: a stale key was injected — check the env is clean before I trust the next run.'",
+      "retest_tip": "Next scan, watch for any mistake you repeated across sessions — aim to feel yourself instinctively leave a note the moment you learn something the hard way."
+    }
+  ],
+  "strengths": [
+    { "pillar": "P7", "note": "Discipline is encoded in CLAUDE.md + skills — you get full credit without re-typing it each prompt." },
+    { "pillar": "P1", "note": "Goals are clear and carry checkable acceptance — strong framing." },
+    { "pillar": "P2", "note": "Decisions are anchored to real files/logs at the decision point — solid grounding." },
+    { "pillar": "P4", "note": "Good delegate-vs-inline judgment — you kept a small fix inline instead of over-spawning." }
+  ],
+  "config": {
+    "target": 75,
+    "tier_bands": { "diamond": 85, "gold": 75, "silver": 65 },
+    "credit_positive": true,
+    "fairness_rule": true
+  }
+}

@@ -1,0 +1,103 @@
+# ---- Node ----
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.pnpm-store/
+dist/
+build/
+.cache/
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+env/
+*.egg
+pip-wheel-metadata/
+
+# ---- AGENTCRAFT local reports (privacy: never commit a user's scan output) ----
+# Rationale: an AGENTCRAFT report is the most intimate artifact a user produces.
+# These globs keep real scans out of git by default. They intentionally do NOT
+# swallow the hand-authored, committed SYNTHETIC fixtures under examples/
+# (see negations below).
+*.agentcraft.json
+*.agentcraft.md
+agentcraft-report*.json
+agentcraft-report*.md
+agentcraft-card*.png
+agentcraft-card*.svg
+agentcraft-card*.html
+# Two-page split: the PRIVATE depth dashboard (page 2) and the redacted shareable
+# card (page 1) are scan outputs, never committed. The `*-depth.*` glob catches an
+# arbitrarily-named depth twin (e.g. me-depth.png) so a user's private HUD dashboard
+# can never be tracked. Page 1 (`*-share.*`) is redacted but is still THEIR scan.
+*-depth.png
+*-depth.svg
+*-depth.html
+*-share.png
+*-share.svg
+*-share.html
+/cards/
+/out/
+/reports/
+
+# ---- PRIVATE build/audit/design docs (local only — never published) ----
+# These are the author's internal working notes (methodology, iteration scores,
+# raw process). They stay on disk (total-preservation) but are NOT part of the
+# public product. The public repo ships only the product surface.
+*_REPORT.md
+*_AUDIT*.md
+*AUDIT_AND_UPGRADE*.md
+AGENTCRAFT_V2_*.md
+LOOP_*.md
+*_LAUNCH_*.md
+LAUNCH_*.md
+
+# ---- examples/ is WHITELIST-ONLY (private-by-default) ----
+# Anything derived from a real Claude Code history (not a synthetic fixture) is a
+# private local scan, never a docs asset. Rather than blacklist private names, we
+# ignore EVERYTHING under examples/ (files and subdirs) and then un-ignore ONLY the
+# curated synthetic fixtures below. Any new file dropped in examples/ is private.
+examples/**
+!examples/README.md
+!examples/sample-report.agentcraft.json
+!examples/sample-report-v2.agentcraft.json
+!examples/breach-fixture.json
+!examples/agentcraft-card-v2-sample.html
+!examples/hero-card.png
+!examples/hero-card.html
+
+# ---- OS / editor ----
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# ---- personal test scratch (kept locally, not shipped) ----
+_*.py
+*-signals*.json
+*.bak
+
+# ---- redaction pattern lists (local tools for the pre-push leak check) ----
+# Hold the forbidden-token / private-filename regexes so they never live in a
+# TRACKED file (otherwise the pattern strings themselves would trip the check).
+.redaction-patterns
+.private-name-patterns
+
+# ---- operator runbook (Bartek's private publish steps — stays local) ----
+# PUBLISH_COMMANDS.md is the author's own push/launch runbook (references a local
+# launch doc + personal workflow). It is not part of the shipped product.
+PUBLISH_COMMANDS.md

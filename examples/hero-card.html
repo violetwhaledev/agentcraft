@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AGENTCRAFT card</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: radial-gradient(1200px 800px at 20% -10%, #12121f 0%, #0a0a12 60%);
+    color: #f4f5fb;
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Helvetica, Arial, "Noto Sans", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .share-stage { width: 720px; padding: 34px; margin: 0 auto; }
+  .card {
+    position: relative; border-radius: 24px; padding: 30px 30px 26px;
+    background:
+      linear-gradient(160deg, #d1d5db22 0%, transparent 42%),
+      linear-gradient(180deg, #1a1a2e 0%, #0d0d18 100%);
+    border: 1px solid #262a44;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.04);
+    overflow: hidden;
+  }
+  .card::before {
+    content: ""; position: absolute; inset: 0; border-radius: 24px; padding: 1px;
+    background: linear-gradient(140deg, #d1d5db, transparent 40%, #9ca3af88);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none;
+  }
+  .brand-row { display:flex; align-items:baseline; justify-content:space-between; }
+  .brand {
+    font-size: 28px; font-weight: 900; letter-spacing: 3px;
+    background: linear-gradient(90deg, #d1d5db, #9ca3af);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .brand-tag { font-size: 12px; color: #5a6088; letter-spacing:.5px; }
+
+  .hero { display:flex; align-items:center; gap: 24px; margin: 22px 0 6px; }
+  .overall {
+    font-size: 108px; font-weight: 900; line-height: 0.9; color: #d1d5db;
+    text-shadow: 0 0 30px #d1d5db44; font-variant-numeric: tabular-nums;
+  }
+  .overall-side { display:flex; flex-direction:column; gap:10px; }
+  .overall-cap { font-size:13px; letter-spacing:2px; color:#9aa0bd; font-weight:700; }
+  .tier-badge {
+    display:inline-block; padding: 7px 16px; border-radius: 999px;
+    font-size: 15px; font-weight: 900; letter-spacing: 2px; color: #0a0a12;
+    background: linear-gradient(90deg, #d1d5db, #9ca3af);
+    box-shadow: 0 6px 18px #d1d5db44; width: fit-content;
+  }
+  .share-verified { display:flex; align-items:baseline; gap:8px; margin-top:4px; }
+  .sv-num { font-size:22px; font-weight:900; font-variant-numeric:tabular-nums; }
+  .sv-cap { font-size:10px; letter-spacing:2px; color:#5a6088; font-weight:700; }
+
+  .radar-wrap { display:flex; justify-content:center; margin: 6px 0 2px; }
+
+  .opinion {
+    margin: 10px 4px 18px; font-size: 15px; line-height: 1.55;
+    color: #9aa0bd; text-align:center;
+  }
+  .opinion b { color: #d1d5db; font-weight: 800; }
+
+  .share-pills { display:grid; grid-template-columns: repeat(7,1fr); gap: 8px; margin-top: 4px; }
+  .share-pill {
+    display:flex; flex-direction:column; align-items:center; gap:2px;
+    background:#0a0a1288; border:1px solid #262a44;
+    border-radius:12px; padding:10px 4px;
+  }
+  .sp-key { font-family:"Cascadia Code", "Consolas", "SFMono-Regular", "Menlo", monospace; font-size:9px; color:#5a6088; font-weight:700; }
+  .sp-name { font-size:9px; color:#9aa0bd; font-weight:700; letter-spacing:.3px; text-align:center; }
+  .sp-moat { color:#a78bfa; font-size:8px; margin-left:2px; }
+  .sp-score { font-size:20px; font-weight:900; font-variant-numeric:tabular-nums; margin-top:2px; }
+
+  .share-foot { text-align:center; margin-top: 20px; font-size: 11px; color:#5a6088; }
+  .share-foot b { color:#9aa0bd; }
+</style>
+</head>
+<body>
+  <div class="share-stage" id="agentcraft-share">
+    <div class="card">
+      <div class="brand-row">
+        <div class="brand">AGENTCRAFT</div>
+        <div class="brand-tag">Not a verdict — a coach.</div>
+      </div>
+
+      <div class="hero">
+        <div class="overall">72</div>
+        <div class="overall-side">
+          <div class="overall-cap">OVERALL</div>
+          <div class="tier-badge">SILVER</div>
+          <div class="share-verified"><span class="sv-num" style="color:#f87171">61%</span><span class="sv-cap">VERIFIED</span></div>
+        </div>
+      </div>
+
+      <div class="radar-wrap"><svg width="676" height="460" viewBox="0 0 676 460" style="max-width:100%;height:auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="AGENTCRAFT 7-pillar radar"><polygon points="338.0,188.6 370.4,204.2 378.4,239.2 356.0,267.3 320.0,267.3 297.6,239.2 305.6,204.2" fill="none" stroke="#262a44" stroke-width="1" opacity="0.7"/><polygon points="338.0,147.2 402.7,178.4 418.7,248.4 373.9,304.6 302.1,304.6 257.3,248.4 273.3,178.4" fill="none" stroke="#262a44" stroke-width="1" opacity="0.7"/><polygon points="338.0,105.8 435.1,152.6 459.1,257.6 391.9,341.9 284.1,341.9 216.9,257.6 240.9,152.6" fill="none" stroke="#262a44" stroke-width="1" opacity="0.7"/><polygon points="338.0,64.4 467.5,126.8 499.4,266.8 409.9,379.2 266.1,379.2 176.6,266.8 208.5,126.8" fill="none" stroke="#262a44" stroke-width="1" opacity="0.7"/><line x1="338.0" y1="230.0" x2="338.0" y2="64.4" stroke="#262a44" stroke-width="1" opacity="0.6"/><line x1="338.0" y1="230.0" x2="467.5" y2="126.8" stroke="#262a44" stroke-width="1" opacity="0.6"/><line x1="338.0" y1="230.0" x2="499.4" y2="266.8" stroke="#262a44" stroke-width="1" opacity="0.6"/><line x1="338.0" y1="230.0" x2="409.9" y2="379.2" stroke="#262a44" stroke-width="1" opacity="0.6"/><line x1="338.0" y1="230.0" x2="266.1" y2="379.2" stroke="#262a44" stroke-width="1" opacity="0.6"/><line x1="338.0" y1="230.0" x2="176.6" y2="266.8" stroke="#262a44" stroke-width="1" opacity="0.6"/><line x1="338.0" y1="230.0" x2="208.5" y2="126.8" stroke="#262a44" stroke-width="1" opacity="0.6"/><polygon points="338.0,94.2 433.8,153.6 452.6,256.2 388.3,334.4 290.6,328.5 244.4,251.4 227.9,142.2" fill="rgba(94,234,212,0.16)" stroke="#5eead4" stroke-width="2.5" stroke-linejoin="round"/><circle cx="338.0" cy="94.2" r="4" fill="#5eead4"/><circle cx="433.8" cy="153.6" r="4" fill="#5eead4"/><circle cx="452.6" cy="256.2" r="4" fill="#5eead4"/><circle cx="388.3" cy="334.4" r="4" fill="#5eead4"/><circle cx="290.6" cy="328.5" r="4" fill="#5eead4"/><circle cx="244.4" cy="251.4" r="4" fill="#a78bfa"/><circle cx="227.9" cy="142.2" r="4" fill="#a78bfa"/><text x="338.0" y="16.7" fill="#9aa0bd" font-size="12.5" font-weight="700" text-anchor="middle" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif">INTENT</text><text x="338.0" y="30.7" fill="#4ade80" font-size="12" font-weight="800" text-anchor="middle" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif">82</text><text x="501.6" y="95.5" fill="#9aa0bd" font-size="12.5" font-weight="700" text-anchor="start" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif">CONTEXT</text><text x="501.6" y="109.5" fill="#fbbf24" font-size="12" font-weight="800" text-anchor="start" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif">74</text><text x="542.1" y="288.6" fill="#9aa0bd" font-size="12.5" font-weight="700" text-anchor="start" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif">EXECUTION</text><text x="542.1" y="302.6" fill="#fbbf24" font-size="12" font-weight="800" text-anchor="start" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif">71</text><text x="428.8" y="430.6" fill="#9aa0bd" font-size="12.5" font-weight="700" text-anchor="start" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif">ORCHESTR.</text><text x="428.8" y="444.6" fill="#fbbf24" font-size="12" font-weight="800" text-anchor="start" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif">70</text><text x="247.2" y="430.6" fill="#9aa0bd" font-size="12.5" font-weight="700" text-anchor="end" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif">VERIFY</text><text x="247.2" y="444.6" fill="#fbbf24" font-size="12" font-weight="800" text-anchor="end" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif">66</text><text x="133.9" y="288.6" fill="#a78bfa" font-size="12.5" font-weight="700" text-anchor="end" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif">MEMORY ◆</text><text x="133.9" y="302.6" fill="#f87171" font-size="12" font-weight="800" text-anchor="end" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif">58</text><text x="174.4" y="95.5" fill="#a78bfa" font-size="12.5" font-weight="700" text-anchor="end" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif">DISCIPLINE ◆</text><text x="174.4" y="109.5" fill="#4ade80" font-size="12" font-weight="800" text-anchor="end" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif">85</text></svg></div>
+
+      <div class="opinion">Solid fundamentals -- a few habits away from the next tier. Your edge is <b>System-Discipline</b>; your biggest lever right now is <b>Memory &amp; Continuity</b>.</div>
+
+      <div class="share-pills"><div class="share-pill"><span class="sp-key">P1</span><span class="sp-name">INTENT</span><span class="sp-score" style="color:#4ade80">82</span></div><div class="share-pill"><span class="sp-key">P2</span><span class="sp-name">CONTEXT</span><span class="sp-score" style="color:#fbbf24">74</span></div><div class="share-pill"><span class="sp-key">P3</span><span class="sp-name">EXECUTION</span><span class="sp-score" style="color:#fbbf24">71</span></div><div class="share-pill"><span class="sp-key">P4</span><span class="sp-name">ORCHESTR.</span><span class="sp-score" style="color:#fbbf24">70</span></div><div class="share-pill"><span class="sp-key">P5</span><span class="sp-name">VERIFY</span><span class="sp-score" style="color:#fbbf24">66</span></div><div class="share-pill"><span class="sp-key">P6</span><span class="sp-name">MEMORY<span class="sp-moat">&#9670;</span></span><span class="sp-score" style="color:#f87171">58</span></div><div class="share-pill"><span class="sp-key">P7</span><span class="sp-name">DISCIPLINE<span class="sp-moat">&#9670;</span></span><span class="sp-score" style="color:#4ade80">85</span></div></div>
+    </div>
+
+    <div class="share-foot">
+      <b>AGENTCRAFT</b> &middot; how you work with AI coding agents &middot;
+      scored 100% locally, nothing sent anywhere &middot; open-source (MIT)
+    </div>
+  </div>
+</body>
+</html>
