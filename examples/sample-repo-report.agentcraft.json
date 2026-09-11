@@ -1,0 +1,222 @@
+{
+  "agentcraft_version": "2",
+  "brand": "AGENTCRAFT",
+  "lens": "B",
+  "report_kind": "code-audit",
+  "generated_at": "2026-09-11T00:00:00Z",
+  "_note": "SYNTHETIC FIXTURE -- hand-authored, not a real repo scan. Lens B (your CODE) code-audit report. Fictional example-repo data only, no real paths. For docs/tests/renderer demo (page 2). See examples/README.md.",
+  "subject": {
+    "label": "synthetic-demo-repo",
+    "repo_name": "example-repo",
+    "repo_path": "/repo/example-repo"
+  },
+  "scan_ref": {
+    "scanner": "agentcraft_repo_scan.py",
+    "scanner_version": "1",
+    "total_files": 148,
+    "total_loc": 21430,
+    "languages": { "typescript": 71, "javascript": 22, "json": 14, "markdown": 11, "css": 9, "other": 21 }
+  },
+  "config": {
+    "target": 75,
+    "tier_bands": { "diamond": 85, "gold": 75, "silver": 65 },
+    "credit_positive": true,
+    "measurement_threshold": 3
+  },
+  "weights": {
+    "C1": 0.13, "C2": 0.14, "C3": 0.15, "C4": 0.13,
+    "C5": 0.13, "C6": 0.11, "C7": 0.10, "C8": 0.11
+  },
+  "axes": {
+    "C1_architecture_structure": {
+      "name": "Architecture & Structure",
+      "eligible": true,
+      "measurement_status": "measured",
+      "score": 78,
+      "limitations": null,
+      "counts": {
+        "module_dirs": 22,
+        "avg_files_per_dir": 6.7,
+        "max_dir_depth": 4,
+        "layering_dirs_present": ["src", "components", "lib", "api"],
+        "intra_repo_import_edges": 214,
+        "circular_import_pairs_hint": 1,
+        "largest_file_loc": 612
+      },
+      "evidence": [
+        { "path": "src/services/order.ts", "note": "clean layered service->repository split; one 612-loc file flagged for later split" }
+      ]
+    },
+    "C2_reliability_errorhandling": {
+      "name": "Reliability & Error Handling",
+      "eligible": true,
+      "measurement_status": "measured",
+      "score": 61,
+      "limitations": null,
+      "counts": {
+        "bare_or_broad_handlers": 9,
+        "empty_catch": 4,
+        "swallowed_errors": 4,
+        "ts_ignore": 3,
+        "risky_call_sites": 46,
+        "try_sites": 38
+      },
+      "evidence": [
+        { "path": "src/lib/http.ts", "note": "4 empty catch blocks swallow fetch failures silently; risky calls outnumber guards" }
+      ]
+    },
+    "C3_security_secrets": {
+      "name": "Security & Secrets",
+      "eligible": true,
+      "measurement_status": "measured",
+      "score": 55,
+      "limitations": null,
+      "counts": {
+        "secret_pattern_hits": 2,
+        "env_committed": false,
+        "eval_calls": 0,
+        "shell_true": 0,
+        "dangerously_set_inner_html": 3,
+        "child_process_calls": 1
+      },
+      "evidence": [
+        { "path": "src/components/RichText.tsx", "note": "3 dangerouslySetInnerHTML usages on user-influenced content; 2 secret-shaped literals counted (values never read)" }
+      ]
+    },
+    "C4_tests_coverage": {
+      "name": "Tests & Coverage",
+      "eligible": true,
+      "measurement_status": "measured",
+      "score": 44,
+      "limitations": null,
+      "counts": {
+        "test_files": 12,
+        "source_files": 84,
+        "test_to_source_file_ratio": 0.143,
+        "test_to_source_loc_ratio": 0.11,
+        "test_config_present": true,
+        "ci_present": true
+      },
+      "evidence": [
+        { "path": "vitest.config.ts", "note": "test harness + CI wired, but only 12 test files against 84 source files -- thin coverage on the service layer" }
+      ]
+    },
+    "C5_maintainability_complexity": {
+      "name": "Maintainability & Complexity",
+      "eligible": true,
+      "measurement_status": "measured",
+      "score": 66,
+      "limitations": null,
+      "counts": {
+        "large_files": 4,
+        "large_functions": 11,
+        "max_function_lines": 118,
+        "deep_nesting_lines": 37,
+        "nested_loops": 6,
+        "duplicate_block_windows": 41,
+        "todo_fixme": 18
+      },
+      "evidence": [
+        { "path": "src/pages/dashboard.tsx", "note": "118-line render function + duplicated card-mapping blocks -- prime extract-method target" }
+      ]
+    },
+    "C6_performance_efficiency": {
+      "name": "Performance Efficiency",
+      "eligible": true,
+      "measurement_status": "measured",
+      "score": 72,
+      "limitations": null,
+      "counts": {
+        "nested_loops": 6,
+        "await_in_loop": 5,
+        "query_or_fetch_in_loop_hint": 7
+      },
+      "evidence": [
+        { "path": "src/api/report.ts", "note": "5 await-in-loop sites + a fetch inside a per-row loop (N+1 shape) on the report endpoint" }
+      ]
+    },
+    "C7_documentation_readability": {
+      "name": "Documentation & Readability",
+      "eligible": true,
+      "measurement_status": "measured",
+      "score": 74,
+      "limitations": null,
+      "counts": {
+        "readme_present": true,
+        "readme_bytes": 9840,
+        "readme_stub": false,
+        "comment_to_code_ratio": 0.14,
+        "single_char_identifier_lines": 88
+      },
+      "evidence": [
+        { "path": "README.md", "note": "solid README + reasonable comment density; naming mostly clear, a cluster of single-char identifiers in the math helpers" }
+      ]
+    },
+    "C8_dependencies_techdebt": {
+      "name": "Dependencies & Tech Debt",
+      "eligible": true,
+      "measurement_status": "measured",
+      "score": 80,
+      "limitations": null,
+      "counts": {
+        "manifests_present": ["package.json"],
+        "lockfiles_present": ["pnpm-lock.yaml"],
+        "dependency_count": 47,
+        "pinned_dependencies_hint": true,
+        "license_present": true,
+        "todo_fixme_total": 18
+      },
+      "evidence": [
+        { "path": "pnpm-lock.yaml", "note": "lockfile present + LICENSE present + pinned deps -- healthy supply-chain posture; 18 TODO/FIXME markers are the main debt signal" }
+      ]
+    }
+  },
+  "overall": {
+    "score": 65,
+    "tier": "silver"
+  },
+  "findings": [
+    {
+      "axis": "C4",
+      "severity": "high",
+      "title": "Service layer is largely untested",
+      "what": "12 test files cover 84 source files (0.14 file ratio); the service + api layers have almost no tests.",
+      "why": "Untested business logic regresses silently on every refactor -- the cost lands on the next change, not this one.",
+      "how": "Add characterization tests for the 3 busiest services first, then gate the CI step you already have on a minimum ratio.",
+      "evidence": [ { "path": "src/services/order.ts", "note": "core order flow, zero tests" } ]
+    },
+    {
+      "axis": "C3",
+      "severity": "high",
+      "title": "Unescaped HTML sink on user-influenced content",
+      "what": "3 dangerouslySetInnerHTML usages render content that can carry user input.",
+      "why": "That is the classic stored-XSS surface -- one unescaped field is enough.",
+      "how": "Sanitize at the render boundary (an allowlist HTML sanitizer) or switch to text rendering where markup is not required.",
+      "evidence": [ { "path": "src/components/RichText.tsx", "note": "renders comment bodies verbatim" } ]
+    },
+    {
+      "axis": "C2",
+      "severity": "medium",
+      "title": "Errors swallowed in the HTTP layer",
+      "what": "4 empty catch blocks discard fetch failures with no log, no rethrow, no user signal.",
+      "why": "A swallowed failure looks like success until the data is wrong downstream -- the hardest class of bug to trace.",
+      "how": "In each catch, at minimum log with context and rethrow (or return a typed error result) so the failure is visible.",
+      "evidence": [ { "path": "src/lib/http.ts", "note": "catch (e) {} around every request" } ]
+    },
+    {
+      "axis": "C6",
+      "severity": "medium",
+      "title": "N+1 fetch on the report endpoint",
+      "what": "A fetch runs inside a per-row loop (plus 5 await-in-loop sites) when building the report response.",
+      "why": "Latency scales linearly with row count -- fine at 10 rows, a timeout at 10,000.",
+      "how": "Batch the per-row fetch into a single query/request outside the loop, then map results in memory.",
+      "evidence": [ { "path": "src/api/report.ts", "note": "await fetch inside for-of over rows" } ]
+    }
+  ],
+  "strengths": [
+    { "axis": "C8", "note": "Lockfile + LICENSE + pinned dependencies -- a clean, auditable supply chain." },
+    { "axis": "C1", "note": "Clear layered structure (src/components/lib/api) with only one weak circular-import hint." },
+    { "axis": "C7", "note": "Real README and reasonable comment density -- the codebase is readable." }
+  ],
+  "summary": "example-repo scores OVERALL 65 (silver): a readable, well-structured, well-packaged codebase whose two highest-leverage gaps are test coverage on the service layer (C4) and an unescaped HTML sink (C3). Reliability (C2) and one N+1 (C6) are the next tier. Architecture (C1), documentation (C7), and dependency hygiene (C8) are strengths."
+}

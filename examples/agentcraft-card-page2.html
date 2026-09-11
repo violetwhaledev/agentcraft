@@ -214,11 +214,24 @@
   .footer { grid-column: 1 / -1; text-align:center; margin-top: 8px; padding-bottom: 6px;
     font-family:'JetBrains Mono', 'Cascadia Code', 'SFMono-Regular', 'Consolas', monospace; font-size: 11px; color:#5f5880; }
   .footer b { color:#9a92b8; }
+
+  .hud-backrow { position: relative; z-index: 3; width: 1200px; margin: 0 auto; padding: 20px 40px 0; }
+  .hud-back {
+    display:inline-flex; align-items:center; text-decoration:none;
+    font-family:'JetBrains Mono', 'Cascadia Code', 'SFMono-Regular', 'Consolas', monospace; font-size: 12px; font-weight: 700; letter-spacing:.4px;
+    color:#41e0d0;
+    border:1px solid #41e0d044; border-radius:999px; padding:7px 15px;
+    background:#41e0d010;
+    transition: background .15s ease, border-color .15s ease;
+  }
+  .hud-back:hover { background:#41e0d022; border-color:#41e0d088; }
+  .back-arrow { font-weight:900; }
 </style>
 </head>
 <body>
   <div class="starfield"></div>
   <div class="stars-near"></div>
+  <div class="hud-backrow"><a class="hud-back" href="hero-card.html"><span class="back-arrow">&larr;</span>&nbsp;&nbsp;Back to the shareable card</a></div>
   <div class="hud-stage" id="agentcraft-depth">
     <!-- LEFT: identity + radar + pillar stats -->
     <div class="glass-card">

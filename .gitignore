@@ -71,10 +71,18 @@ examples/**
 !examples/README.md
 !examples/sample-report.agentcraft.json
 !examples/sample-report-v2.agentcraft.json
+# Lens B (your CODE) synthetic code-audit report -- page-2 renderer fixture.
+!examples/sample-repo-report.agentcraft.json
 !examples/breach-fixture.json
 !examples/agentcraft-card-v2-sample.html
 !examples/hero-card.png
 !examples/hero-card.html
+# Landing entry point for the walkable demo trio (index -> card -> command-center).
+!examples/index.html
+# Lens B (your CODE) rendered code-audit command-center demo (page + PNG still).
+# Name deliberately does NOT match the `*-depth.*` glob, so it's whitelisted here.
+!examples/sample-repo-card.html
+!examples/sample-repo-card.png
 
 # ---- OS / editor ----
 .DS_Store

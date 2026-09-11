@@ -15,26 +15,35 @@
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-orange.svg)](./CONTRIBUTING.md)
 [![Status: v2](https://img.shields.io/badge/status-v2%20·%20improving%20in%20public-lightgrey.svg)](#-honest-status)
 
-<!-- HERO CARDS — real renders of the SYNTHETIC sample report (examples/sample-report-v2.agentcraft.json), produced offline by the bundled renderer. Reproduce your own from your real history via Quick start. -->
+<!-- HERO CARDS — real renders of the SYNTHETIC sample reports (examples/sample-report-v2.agentcraft.json for Lens A, examples/sample-repo-report.agentcraft.json for Lens B), produced offline by the bundled renderer. Reproduce your own from your real history / codebase via Quick start. -->
 
-**Two pages. One run.**
+**Two LENSES. One tool.** — **① You** (how you *work* with agents) and **② Your Code** (a repo audit).
 
 <table>
 <tr>
 <td width="45%" valign="top" align="center">
-<img src="./examples/hero-card.png" alt="AGENTCRAFT page 1 — shareable card: 7-pillar radar, tier badge, one-line coaching" width="420"><br>
-<b>Page 1 — the shareable card</b><br>
-<sub>Radar, tier, one-line verdict. Redacted (no paths/filenames). The one you screenshot.</sub>
+<img src="./examples/hero-card.png" alt="AGENTCRAFT Lens A page 1 — shareable card: how you work with agents, 7-pillar radar, tier badge, one-line coaching" width="420"><br>
+<b>Lens A · YOU — the shareable card</b><br>
+<sub>How you <b>work</b> with agents: your habits, memory &amp; continuity, coaching plan. Radar, tier, one-line verdict. Redacted (no paths/filenames). The one you screenshot.</sub>
 </td>
 <td width="55%" valign="top" align="center">
-<img src="./examples/agentcraft-card-page2.png" alt="AGENTCRAFT page 2 — private command-center: ~40 sub-signals, per-pillar micro-bars, growth plan, systems audit" width="460"><br>
-<b>Page 2 — your private command-center</b><br>
-<sub>~40 sub-signals across all 7 pillars, per-pillar micro-bars, a full <b>growth plan</b> (what to fix, why it costs you, the exact habit + an example from your own work), structure, profile &amp; anti-patterns. Stays on <b>your</b> machine.</sub>
+<img src="./examples/agentcraft-card-page2.png" alt="AGENTCRAFT Lens A page 2 — private command-center: ~40 sub-signals, per-pillar micro-bars, growth plan, systems audit" width="460"><br>
+<b>Lens A · YOU — private command-center</b><br>
+<sub>~40 sub-signals across all 7 pillars, per-pillar micro-bars, a full <b>growth plan</b> (what to fix, why it costs you, the exact habit + an example from your own work), profile &amp; anti-patterns. Stays on <b>your</b> machine.</sub>
+</td>
+</tr>
+<tr>
+<td colspan="2" valign="top" align="center">
+<img src="./examples/sample-repo-card.png" alt="AGENTCRAFT Lens B — code-audit command-center: overall code grade + tier, all 8 axes (architecture, reliability, security, tests, maintainability, performance, docs, dependencies), top findings, refactor priorities" width="560"><br>
+<b>Lens B · YOUR CODE — the code-audit command-center</b><br>
+<sub>The overall <b>code grade</b> + tier and all <b>8 axes</b> (architecture, reliability, security, tests, maintainability, performance, docs, dependencies), top findings, refactor priorities and strengths. Same dark HUD. Counts only — never a secret value. Also 100% local.</sub>
 </td>
 </tr>
 </table>
 
-*(both are **real renders** of the bundled synthetic sample — not mockups, and not anyone's private data. Yours render from **your** history; see [Quick start](#-quick-start). Page 1 is safe to share; page 2 is git-ignored by default so your deep audit never leaves your disk.)*
+*(all are **real renders** of the bundled synthetic samples — not mockups, and not anyone's private data. Yours render from **your** history / **your** codebase; see [Quick start](#-quick-start). Lens A page 1 is safe to share; the private pages are git-ignored by default so your deep audit never leaves your disk.)*
+
+**Walk through a live example:** open [`examples/index.html`](./examples/index.html) → pick a lens → **① You** (card → command-center depth, and back) or **② Your Code** (the code-audit command-center). Every `--page both` run wires the Lens-A navigation into your own output; a code-audit run renders the Lens-B command-center.
 
 </div>
 

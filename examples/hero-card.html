@@ -72,6 +72,26 @@
   .sp-moat { color:#a78bfa; font-size:8px; margin-left:2px; }
   .sp-score { font-size:20px; font-weight:900; font-variant-numeric:tabular-nums; margin-top:2px; }
 
+  /* FAZA 1 — LENS A caption strip (frames the card as "YOU · how you work") */
+  .share-lens { text-align:center; margin: 4px 0 14px; font-size: 11px;
+    letter-spacing: 1.5px; font-weight: 700; text-transform: uppercase;
+    color: #5a6088; }
+  .share-lens b { color: #d1d5db; }
+
+  .share-nav { display:flex; justify-content:center; margin-top: 22px; }
+  .share-cta {
+    display:inline-flex; align-items:center; gap:2px; text-decoration:none;
+    padding: 12px 24px; border-radius: 999px;
+    font-size: 14px; font-weight: 800; letter-spacing:.4px;
+    color: #0a0a12;
+    background: linear-gradient(90deg, #d1d5db, #9ca3af);
+    box-shadow: 0 8px 24px #d1d5db44, inset 0 1px 0 rgba(255,255,255,.25);
+    border: 1px solid #d1d5db66;
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .share-cta:hover { transform: translateY(-1px); box-shadow: 0 12px 30px #d1d5db66; }
+  .cta-arrow { margin-left:8px; font-weight:900; }
+
   .share-foot { text-align:center; margin-top: 20px; font-size: 11px; color:#5a6088; }
   .share-foot b { color:#9aa0bd; }
 </style>
@@ -83,6 +103,8 @@
         <div class="brand">AGENTCRAFT</div>
         <div class="brand-tag">Not a verdict — a coach.</div>
       </div>
+
+      <div class="share-lens">LENS&nbsp;A &middot; <b>YOU</b> &mdash; how you work with agents</div>
 
       <div class="hero">
         <div class="overall">72</div>
@@ -100,8 +122,11 @@
       <div class="share-pills"><div class="share-pill"><span class="sp-key">P1</span><span class="sp-name">INTENT</span><span class="sp-score" style="color:#4ade80">82</span></div><div class="share-pill"><span class="sp-key">P2</span><span class="sp-name">CONTEXT</span><span class="sp-score" style="color:#fbbf24">74</span></div><div class="share-pill"><span class="sp-key">P3</span><span class="sp-name">EXECUTION</span><span class="sp-score" style="color:#fbbf24">71</span></div><div class="share-pill"><span class="sp-key">P4</span><span class="sp-name">ORCHESTR.</span><span class="sp-score" style="color:#fbbf24">70</span></div><div class="share-pill"><span class="sp-key">P5</span><span class="sp-name">VERIFY</span><span class="sp-score" style="color:#fbbf24">66</span></div><div class="share-pill"><span class="sp-key">P6</span><span class="sp-name">MEMORY<span class="sp-moat">&#9670;</span></span><span class="sp-score" style="color:#f87171">58</span></div><div class="share-pill"><span class="sp-key">P7</span><span class="sp-name">DISCIPLINE<span class="sp-moat">&#9670;</span></span><span class="sp-score" style="color:#4ade80">85</span></div></div>
     </div>
 
+    <div class="share-nav"><a class="share-cta" href="index.html">&#128269;&nbsp;&nbsp;View the full command-center audit <span class="cta-arrow">&rarr;</span></a></div>
+
     <div class="share-foot">
-      <b>AGENTCRAFT</b> &middot; how you work with AI coding agents &middot;
+      <b>AGENTCRAFT</b> &middot; Lens A &mdash; how you WORK with AI agents:
+      habits, memory &amp; continuity, your coaching plan &middot;
       scored 100% locally, nothing sent anywhere &middot; open-source (MIT)
     </div>
   </div>

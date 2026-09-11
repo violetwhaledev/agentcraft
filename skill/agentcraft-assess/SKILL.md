@@ -1235,3 +1235,232 @@ missed`, declined positive, `verified_outcome <= applied`). Honest-empty is
 structural. Meta-metrics that inform without punishing. A coach, not a verdict.
 100% local. Backward-tolerant to v1. Inspired by MEGA.dev — we win by building
 deeper, open, and private.*
+
+---
+---
+
+# Lens B — Code Audit (your repo)
+
+> **Two lenses, one local tool.** Everything above is **Lens A** — how you *work*
+> with AI coding agents (collaboration / memory / coaching, from your session
+> history). This section is **Lens B** — a quality audit of **your CODE**, run on
+> ANY repo, 100% local, same privacy contract. Page 1 of the card renders Lens A;
+> page 2 renders Lens B. Lens A is untouched by anything below — Lens B is additive.
+
+You are running the AGENTCRAFT **code audit**. You are still **the judge** — the
+user's own Claude Code agent, following this runbook **locally**. There is no
+external scorer, no upload, no API key. The same honesty contract from §0 applies:
+**zero third-party egress** — nothing about the code leaves the machine; you read
+the code locally to audit it and write **one local report file**. The mechanical
+scanner (`agentcraft_repo_scan.py`) emits **COUNTS ONLY** (it scores nothing and it
+**never echoes a secret value** — C3 reports secret *counts*), exactly like the
+Lens-A extractor. **You** turn counts + a targeted local code SAMPLE into the 0–100
+axis scores.
+
+## LB.0 — What you produce
+
+1. `agentcraft-repo-report.agentcraft.json` — a **code-audit** report matching the schema in
+   **LB.5** (`report_kind:"code-audit"`, `lens:"B"`). Default path: the audited
+   repo's root (or the OS temp dir if not writable / the user prefers).
+2. (Optional) a short spoken summary + the absolute path.
+3. (Optional, only if asked to share) a redacted shareable summary — same redaction
+   craft as §7b (no paths, no repo name, no verbatim code).
+
+The JSON is consumed by the page-2 renderer in a later phase. A synthetic, schema-
+valid example lives at `../../examples/sample-repo-report.agentcraft.json` — **mirror its
+shape.**
+
+## LB.1 (MANDATORY) — run the scanner FIRST, then SAMPLE the code
+
+**Score from counts, not vibes** (same discipline as Lens A §2). The scanner is
+pure-stdlib, streaming, zero-egress, and self-testable.
+
+```bash
+# 1) Prove the scanner is sound on its bundled synthetic fixture (known-answer):
+python ../../agentcraft_repo_scan.py --self-test          # prints OK on success
+
+# 2) Emit the 8-axis COUNTS for the repo you are auditing (default: current dir):
+python ../../agentcraft_repo_scan.py --repo /path/to/repo --out repo-counts.json
+#   --repo <path>   -> the repo to scan (default: cwd)
+#   --out <path>    -> counts JSON you then score from ('-' = stdout)
+#   --scanned-at    -> optional ISO timestamp; omit to keep the counts deterministic
+```
+
+`repo-counts.json` gives you, per axis (C1..C8), a small dict of **mechanical
+counts** plus top-level `languages`, `total_files`, `total_loc`. These are the
+**falsifiable anchor** — the numbers you derive each axis score from.
+
+**Then SAMPLE the code (the depth move — bounded, local).** Counts alone can't tell
+a *justified* broad-except from a lazy one, or a *sanitized* `dangerouslySetInnerHTML`
+from an XSS hole. For each axis where the counts flag a concern (or an axis you're
+about to score high), **open a few of the specific files the counts point at and
+read the relevant slices** — e.g. the files under `C2 swallowed_errors`, the
+`C3 dangerouslySetInnerHTML` sites, the `C5 largest_files`. This is a **targeted,
+bounded** read (a handful of files / relevant regions), NOT a slurp of the whole
+repo. Depth WITHOUT the total dump — same principle as Lens A §2b.1.
+
+> **If the scanner is absent or errors:** do NOT fabricate counts. Fall back to a
+> manual read (Grep for the same cues), score conservatively, set
+> `coverage.confidence:"low"`, and say so. Honest-empty over invented numbers.
+>
+> **Privacy line (do NOT cross):** never read a `.env`, a key, or a raw secret body.
+> The scanner already reports secrets as **counts only**; if a sampled file contains
+> a secret-shaped string, do NOT quote it into the report — note the count and coach
+> around it.
+
+## LB.2 — The 8 axes (grounded in ISO/IEC 25010 + SonarQube)
+
+Each axis maps to a scanner counts block. Score each **0–100** from the counts +
+your code sample, using the band scale `0–39 weak · 40–64 developing · 65–84 strong
+· 85–100 elite`. Capability-gate the same way Lens A does: **if the signal genuinely
+cannot be measured** (e.g. a docs-only repo with no source for C5/C6), mark the axis
+`unmeasured` + a `limitations` code — **never a fabricated low score.**
+
+| Axis | Name | Scores from (scanner counts) | ISO 25010 / Sonar lens |
+|---|---|---|---|
+| **C1** | Architecture & Structure | `module_dirs`, `avg_files_per_dir`, `max_dir_depth`, `layering_dirs_present`, `intra_repo_import_edges`, `circular_import_pairs_hint`, `largest_files` | Maintainability: Modularity |
+| **C2** | Reliability & Error Handling | `bare_except`/`broad_except`, `empty_catch`, `swallowed_errors`, `ts_ignore`/`noqa`, `risky_call_sites` vs `try_sites`/`catch_sites` | Reliability + Sonar Bugs |
+| **C3** | Security & Secrets | `secret_pattern_hits` (COUNT), `env_committed`, `eval`/`exec`/`shell_true`, `dangerously_set_inner_html`, `child_process_calls` | Security + OWASP |
+| **C4** | Tests & Coverage | `test_files` vs `source_files`, `test_to_source_*_ratio`, `test_config_present`, `ci_present` | Sonar Coverage |
+| **C5** | Maintainability & Complexity | `large_files`, `large_functions`, `max_function_lines`, `deep_nesting_lines`, `nested_loops`, `duplicate_block_windows`, `todo_fixme` | Maintainability |
+| **C6** | Performance Efficiency | `nested_loops`, `await_in_loop`, `query_or_fetch_in_loop_hint` (N+1) | Performance Efficiency |
+| **C7** | Documentation & Readability | `readme_present`/`readme_bytes`/`readme_stub`, `comment_to_code_ratio`, `single_char_identifier_lines` | Maintainability: Analysability |
+| **C8** | Dependencies & Tech Debt | `manifests_present`, `lockfiles_present`, `dependency_count`, `pinned_dependencies_hint`, `license_present`, `todo_fixme_total` | Portability + supply chain |
+
+**Scoring notes (evidence-anchored):**
+- A count is a *signal*, not a verdict. `broad_except: 9` is only weak if the sample
+  shows the handlers are lazy; a few justified catch-alls in a big codebase is fine.
+- **C3 is asymmetric:** a single confirmed secret / unescaped sink is high-severity —
+  weight it. But `secret_pattern_hits > 0` alone is a *count* (could be a fixture or
+  a false positive); confirm from the sample before you call it a leak, and **never
+  quote the value**.
+- Bigger repos earn more slack on absolute counts — reason in **rates/ratios** the
+  scanner already provides (`comment_to_code_ratio`, `test_to_source_*_ratio`), not
+  raw totals, wherever a ratio exists.
+
+## LB.3 — Findings + strengths (the coaching, code-flavored)
+
+For each **high/medium** concern, emit a `findings[]` entry (see LB.5): `axis`,
+`severity`, `title`, `what` (from the counts + sample), `why` (the cost it causes),
+`how` (the concrete fix), and `evidence` (the file(s) you sampled). For each axis at
+or above `config.target`, add a `strengths[]` affirmation. Prove-don't-declare:
+**every finding cites a file you actually read** — no evidence, no assertion.
+
+Unlike Lens A (which coaches the *human's* habit), Lens B coaching is about the
+**code**: name the file, name the fix. It's an audit, so infra/code fixes ARE the
+prescription here (that's the point) — but keep them concrete and evidence-anchored.
+
+## LB.4 — OVERALL + tier
+
+`overall.score` = the weighted mean over **eligible (measured)** axes, using the
+`weights` block (default below), **renormalized** over the eligible set. Tier from
+`config.tier_bands` (`85+ diamond · 75+ gold · 65+ silver · else bronze`), mirroring
+Lens A so page 1 and page 2 read on the same scale.
+
+```
+C1 0.13  C2 0.14  C3 0.15  C4 0.13  C5 0.13  C6 0.11  C7 0.10  C8 0.11   (sum = 1.00)
+overall.score = round( Σ(w_i · score_i) / Σ(w_i)  over eligible axes )
+```
+
+## LB.5 — The code-audit report SCHEMA (page-2 contract)
+
+Emit ONE JSON file conforming to this. It is a **sibling** of the Lens-A schema
+(SPEC §7), not a clash: it carries `lens:"B"` + `report_kind:"code-audit"` and its
+own `axes` (C1..C8) instead of Lens-A `pillars` (P1..P7). `brand` mirrors SPEC §0
+(`"AGENTCRAFT"`). See `../../examples/sample-repo-report.agentcraft.json` for a complete,
+valid instance.
+
+```jsonc
+{
+  "agentcraft_version": "2",                 // schema generation
+  "brand": "AGENTCRAFT",                     // mirrors SPEC §0 BRAND
+  "lens": "B",                               // Lens B == code audit (Lens A omits or sets "A")
+  "report_kind": "code-audit",               // disambiguates from a Lens-A collaboration report
+  "generated_at": "2026-09-11T00:00:00Z",    // ISO-8601 UTC
+  "subject": {
+    "label": "local-repo",
+    "repo_name": "<repo basename or null>",
+    "repo_path": "<abs repo path or null>"
+  },
+  "scan_ref": {                              // provenance: what the scanner reported
+    "scanner": "agentcraft_repo_scan.py",
+    "scanner_version": "1",
+    "total_files": 148,
+    "total_loc": 21430,
+    "languages": { "typescript": 71, "javascript": 22, "json": 14 }
+  },
+  "config": {
+    "target": 75,                            // findings/strengths threshold
+    "tier_bands": { "diamond": 85, "gold": 75, "silver": 65 },
+    "credit_positive": true,
+    "measurement_threshold": 3
+  },
+  "weights": { "C1":0.13,"C2":0.14,"C3":0.15,"C4":0.13,"C5":0.13,"C6":0.11,"C7":0.10,"C8":0.11 },
+
+  "axes": {                                  // ALL of C1..C8 present, always
+    "C1_architecture_structure": {
+      "name": "Architecture & Structure",
+      "eligible": true,                      // false => unmeasured/excluded from OVERALL
+      "measurement_status": "measured",      // measured | unmeasured
+      "score": 78,                           // 0-100, or null if unmeasured
+      "limitations": null,                   // null when measured; a code when unmeasured:
+                                             //   no-source | narrow-window | scanner-gap
+      "counts": { "...": "the axis's scanner count subset you scored from" },
+      "evidence": [ { "path": "src/services/order.ts", "note": "what you saw when you sampled it" } ]
+    }
+    // ... C2..C8, same shape ...
+  },
+
+  "overall": { "score": 66, "tier": "silver" },   // weighted mean over eligible axes (LB.4)
+
+  "findings": [ {                            // one per high/medium concern
+    "axis": "C4",
+    "severity": "high",                      // high | medium | low
+    "title": "Service layer is largely untested",
+    "what": "12 test files cover 84 source files; the service layer has ~no tests.",
+    "why": "Untested business logic regresses silently on every refactor.",
+    "how": "Add characterization tests for the 3 busiest services, then gate CI on a min ratio.",
+    "evidence": [ { "path": "src/services/order.ts", "note": "core order flow, zero tests" } ]
+  } ],
+
+  "strengths": [                             // axes at/above target; str OR {axis,note}
+    { "axis": "C8", "note": "Lockfile + LICENSE + pinned deps -- clean supply chain." }
+  ],
+
+  "summary": "One-paragraph verdict in your own words: OVERALL + tier + the top gaps + the strengths."
+}
+```
+
+**Schema invariants (a later renderer relies on these):**
+1. `axes` contains **all** keys `C1..C8`; an unmeasured axis has `eligible:false`,
+   `score:null`, `measurement_status:"unmeasured"`, `limitations:"<code>"`.
+2. `overall.score` is an integer 0–100; `overall.tier ∈ {diamond,gold,silver,bronze}`
+   consistent with `config.tier_bands`.
+3. `lens:"B"` and `report_kind:"code-audit"` are present (this is what tells the
+   renderer to draw page 2, not a Lens-A card).
+4. `brand` mirrors SPEC §0 (`"AGENTCRAFT"`).
+5. Every **eligible** axis carries `counts` + ≥1 `evidence` item (prove-don't-declare:
+   if you can't point to a file, don't score it high).
+6. `scan_ref.total_files` / `total_loc` echo the scanner output (provenance).
+7. **No secret VALUES anywhere** — C3 is counts-only; a sampled secret is coached
+   around, never quoted.
+
+## LB.6 — Guardrails (re-read before finishing Lens B)
+
+- **Scanner-first, counts-anchored.** Run `agentcraft_repo_scan.py`, score from its
+  counts + a bounded local code sample. If it's missing, say so — never fabricate.
+- **Zero third-party egress.** Nothing about the code leaves the machine. The audit
+  report is the only artifact and it stays local (git-ignored by default).
+- **Never echo a secret.** C3 reports counts; if you sample a file with a secret,
+  coach around it — do not quote the value into the report.
+- **Honest-empty is structural.** A signal that genuinely can't be measured (e.g. no
+  source files for C5/C6) is `unmeasured` + a `limitations` code, excluded from
+  OVERALL — never a fabricated low number.
+- **Prove-don't-declare.** Every finding + high score cites a file you actually read.
+- **Lens A is untouched.** This section is additive; the collaboration runbook above
+  is unchanged. Page 1 = Lens A, page 2 = Lens B.
+
+*AGENTCRAFT Lens B — a quality audit of your CODE, on any repo, 100% local. Eight axes
+grounded in ISO/IEC 25010 + SonarQube. The scanner counts mechanically (and never
+echoes a secret); your own Claude turns counts + a bounded code sample into the
+scores. Sibling schema to Lens A — page 1 how you work, page 2 your code.*
