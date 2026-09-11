@@ -15,10 +15,26 @@
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-orange.svg)](./CONTRIBUTING.md)
 [![Status: v2](https://img.shields.io/badge/status-v2%20·%20improving%20in%20public-lightgrey.svg)](#-honest-status)
 
-<!-- HERO CARD — a real render of the SYNTHETIC sample report (examples/sample-report-v2.agentcraft.json), produced offline by the bundled renderer. Reproduce your own from your real history via Quick start. -->
-<img src="./examples/hero-card.png" alt="AGENTCRAFT card — 7-pillar radar, tier badge, and growth-plan coaching panel" width="720">
+<!-- HERO CARDS — real renders of the SYNTHETIC sample report (examples/sample-report-v2.agentcraft.json), produced offline by the bundled renderer. Reproduce your own from your real history via Quick start. -->
 
-*(this is a **real render** of the bundled synthetic sample — not a mockup, and not anyone's private data. Yours renders from **your** history; see [Quick start](#-quick-start))*
+**Two pages. One run.**
+
+<table>
+<tr>
+<td width="45%" valign="top" align="center">
+<img src="./examples/hero-card.png" alt="AGENTCRAFT page 1 — shareable card: 7-pillar radar, tier badge, one-line coaching" width="420"><br>
+<b>Page 1 — the shareable card</b><br>
+<sub>Radar, tier, one-line verdict. Redacted (no paths/filenames). The one you screenshot.</sub>
+</td>
+<td width="55%" valign="top" align="center">
+<img src="./examples/agentcraft-card-page2.png" alt="AGENTCRAFT page 2 — private command-center: ~40 sub-signals, per-pillar micro-bars, growth plan, systems audit" width="460"><br>
+<b>Page 2 — your private command-center</b><br>
+<sub>~40 sub-signals across all 7 pillars, per-pillar micro-bars, a full <b>growth plan</b> (what to fix, why it costs you, the exact habit + an example from your own work), structure, profile &amp; anti-patterns. Stays on <b>your</b> machine.</sub>
+</td>
+</tr>
+</table>
+
+*(both are **real renders** of the bundled synthetic sample — not mockups, and not anyone's private data. Yours render from **your** history; see [Quick start](#-quick-start). Page 1 is safe to share; page 2 is git-ignored by default so your deep audit never leaves your disk.)*
 
 </div>
 
@@ -351,7 +367,8 @@ agentcraft/
     ├── sample-report.agentcraft.json    ·   synthetic v1 report (silver-72) — still valid under v2 (backward-tolerance)
     ├── sample-report-v2.agentcraft.json ·   synthetic v2 report exercising the partition / gating / trend blocks
     ├── breach-fixture.json              ·   synthetic report used to test the renderer's redaction guard
-    └── hero-card.{png,html}             ·   the rendered hero card (from the synthetic v2 report above)
+    ├── hero-card.{png,html}             ·   rendered PAGE 1 (shareable card) from the synthetic v2 report above
+    └── agentcraft-card-page2.{png,html} ·   rendered PAGE 2 (command-center depth dashboard) from the same synthetic report
 ```
 
 ---

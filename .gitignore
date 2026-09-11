@@ -101,3 +101,5 @@ _*.py
 # PUBLISH_COMMANDS.md is the author's own push/launch runbook (references a local
 # launch doc + personal workflow). It is not part of the shipped product.
 PUBLISH_COMMANDS.md
+!examples/agentcraft-card-page2.png
+!examples/agentcraft-card-page2.html
